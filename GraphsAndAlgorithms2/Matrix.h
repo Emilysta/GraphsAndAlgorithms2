@@ -5,14 +5,14 @@ template <typename T> //int,double, float
 class Matrix
 {
 	int numberOfPoints;
-	T* ** matrix;
+	T** matrix;
 public:
 	Matrix();
 	Matrix(int n);
 	~Matrix();
 	void show();
-	void setElement(int row, int column, T* element);
-	T* getElement(int row, int column) const;
+	void setElement(int row, int column, T element);
+	T getElement(int row, int column) const;
 };
 
 template <typename T>
@@ -24,9 +24,9 @@ Matrix<T>::Matrix() {
 template <typename T>
 Matrix<T>::Matrix(int n) {
 	numberOfPoints = n;
-	matrix = new T ** [numberOfPoints];
+	matrix = new T * [numberOfPoints];
 	for (int i = 0; i < numberOfPoints; i++) {
-		matrix[i] = new T*[numberOfPoints];
+		matrix[i] = new T[numberOfPoints];
 	}
 	for (int i = 0; i < numberOfPoints; i++) {
 		for (int j = 0; j < numberOfPoints; j++) {
@@ -60,11 +60,11 @@ void Matrix<T>::show() {
 }
 
 template <typename T>
-void Matrix<T>::setElement(int row, int column, T* element) {
+void Matrix<T>::setElement(int row, int column, T element) {
 	matrix[row][column] = element;
 }
 
 template <typename T>
-T* Matrix<T>::getElement(int row, int column) const {
+T Matrix<T>::getElement(int row, int column) const {
 	return matrix[row][column];
 }

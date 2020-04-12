@@ -15,8 +15,8 @@ public:
 	int size();
 	void showList();
 	bool isEmpty() const;
+	void swap(T* elem1, T* elem2);//zamiana miejscami
 	Element<T>* getHead() const;
-
 	T* operator [](int toSearch) const;
 };
 
@@ -51,10 +51,17 @@ void List<T>::removeFromFront() {
 template <typename T>
 void List<T>::removeFromBack() {
 	Element<T>* toRemove = tail;
-	tail = toRemove->getPrevious();
-	toRemove->setPrevious(nullptr);
-	delete toRemove;
-	tail->setNext(nullptr);
+	if (size2 > 1) {
+		tail = toRemove->getPrevious();
+		tail->setNext(nullptr);
+		toRemove->setPrevious(nullptr);
+		delete toRemove;
+	}
+	else {
+		tail = nullptr;
+		head = nullptr;
+		delete toRemove;
+	}
 	--size2;
 }
 
@@ -62,15 +69,15 @@ template <typename T>
 void List<T>::insertOnFront(T* elem) {
 	Element<T>* newElem = new Element<T>;
 	newElem->setElement(elem);
-	newElem->setPrevious(nullptr);//prev = nullptr;
-	if (head == nullptr) {
-		newElem->setNext(nullptr);// next = nullptr;
+	newElem->setPrevious(nullptr);
+	if (head == nullptr && tail == nullptr) {
+		newElem->setNext(nullptr);
 		head = newElem;
 		tail = newElem;
 	}
 	else {
-		newElem->setNext(head);// next = head;
-		head->setPrevious(newElem);// prev = newElem;
+		newElem->setNext(head);
+		head->setPrevious(newElem);
 		head = newElem;
 	}
 	++size2;
@@ -80,16 +87,13 @@ template <typename T>
 void List<T>::insertOnBack(T* elem) {
 	Element<T>* newElem = new Element<T>();
 	newElem->setElement(elem);
-	newElem->setNext(nullptr); // next = nullptr;
-	if (head == nullptr) {
-		newElem->setPrevious(nullptr);
+	if (tail == nullptr && head ==nullptr) {
 		head = newElem;
 		tail = newElem;
 	}
 	else {
-		//newElem->setNext(nullptr);
 		newElem->setPrevious(tail);
-		tail->setNext(newElem);// next = newElem;
+		tail->setNext(newElem);
 		tail = newElem;
 	}
 	++size2;
@@ -98,14 +102,14 @@ void List<T>::insertOnBack(T* elem) {
 template <typename T>
 int List<T>::size() {
 	int count = 0;
-	Element<T>* h = head;
 	if (isEmpty()) {
-		//std::cout << "Lista pusta\n";
+		return count;
 	}
 	else {
+		Element<T>* h = head;
 		while (h != nullptr) {
 			count++;
-			h = h->getNext();// next;
+			h = h->getNext();
 		}
 	}
 	return count;
@@ -118,10 +122,10 @@ void List<T>::showList() {
 		std::cout << "Lista pusta\n";
 	}
 	else {
-		for (int i = 0; i < size(); i++) {
+		for (int i = 0; i < size2; i++) {
 			(h->getElement())->show();
 			std::cout<< " ";
-			h = h->getNext();// next;
+			h = h->getNext();
 		}
 	}
 	std::cout << '\n';
@@ -130,6 +134,13 @@ void List<T>::showList() {
 template <typename T>
 bool List<T>::isEmpty() const {
 	return (head == nullptr);
+}
+
+template <typename T>
+void List<T>::swap(T* elem1, T* elem2) {
+	T tmp = *(elem1);
+	*elem1 = *elem2;
+	*elem2 = tmp;
 }
 
 template <typename T>
