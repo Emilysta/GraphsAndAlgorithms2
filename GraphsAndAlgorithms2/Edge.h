@@ -18,7 +18,7 @@ public:
 		endOfEdge = nullptr;
 	}
 	~Edge() {
-		delete whereInList;
+		whereInList = nullptr;
 		startOfEdge = nullptr;
 		endOfEdge = nullptr;
 	}
@@ -51,12 +51,12 @@ Element<Edge<t>>* Edge<t>::getPositionInList() const {
 
 template <typename t>
 Vertex<int>* Edge<t>::getStartOfEdge() const {
-	return whereInList;
+	return startOfEdge;
 }
 
 template <typename t>
 Vertex<int>* Edge<t>::getEndOfEdge() const {
-	return whereInList;
+	return endOfEdge;
 }
 
 template <typename t>

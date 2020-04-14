@@ -10,6 +10,7 @@ public:
 	Matrix();
 	Matrix(int n);
 	~Matrix();
+	void setNullptr();
 	void show();
 	void setElement(int row, int column, T element);
 	T getElement(int row, int column) const;
@@ -41,6 +42,15 @@ Matrix<T>::~Matrix() {
 		delete[] matrix[i];
 	}
 	delete[] matrix;
+}
+
+template <typename T>
+void Matrix<T>::setNullptr() {
+	for (int i = 0; i < numberOfPoints; i++) {
+		for (int j = 0; j < numberOfPoints; j++) {
+			matrix[i][j] = nullptr;
+		}
+	}
 }
 
 template <typename T> //to show edges that are saved

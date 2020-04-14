@@ -12,7 +12,7 @@ public:
 		point = -100;
 	}
 	~Vertex() {
-		//delete whereInList;
+		whereInList = nullptr;
 	}
 	Vertex(t newPoint) {
 		point = newPoint;

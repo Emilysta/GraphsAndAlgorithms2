@@ -1,23 +1,28 @@
 #pragma once
 #include "Element.h"
+#include "Compare.h"
 template <typename T>
 class List {
-	Element<T>* head;
+	Element<T>* head; //Element<T> to "opakowanie" 
 	Element<T>* tail;
 	int size2;
 public:
 	List();
 	~List();
 	void removeFromFront();
+	void removeAtIndex(int index);
 	void removeFromBack();
 	void insertOnFront(T* elem);
+	void insertAfter(int index, T* newElem);
 	void insertOnBack(T* elem);
 	int size();
 	void showList();
 	bool isEmpty() const;
 	void swap(T* elem1, T* elem2);//zamiana miejscami
 	Element<T>* getHead() const;
-	T* operator [](int toSearch) const;
+	Element<T>* getTail() const;
+	Element<T>* getElemAtIndex(int index) const; //zwraca "opakowanie" o indeksie
+	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
 };
 
 template <typename T>
@@ -27,25 +32,47 @@ List<T>::List() {
 	tail = nullptr;
 }
 
-
 template <typename T>
 List<T>::~List() {
-	//delete tail;
 	while (!isEmpty()){
 		removeFromFront();
-		--size2;
 	}
-	delete head; //???? czy bez wycieków? co z reszta poloaczonych elementow
-
+	delete head;
 }
 
 template <typename T>
 void List<T>::removeFromFront() {
-	Element<T>* toRemove = head;
-	head = toRemove->getNext();
-	toRemove->setNext(nullptr);
-	delete toRemove;
-	--size2;
+	if (size2 != 0) {
+		Element<T>* toRemove = head;
+		head = toRemove->getNext();
+		toRemove->setNext(nullptr);
+		delete toRemove;
+		--size2;
+	}
+}
+
+template <typename T>
+void List<T>::removeAtIndex(int index) {
+	if (index < 0 || index >= size2) {
+		std::cout << "Zly indeks!" << std::endl;
+	}
+	else {
+		if (index == 0) {
+			removeFromFront();
+		}
+		if (index == size2 - 1) {
+			removeFromBack();
+		}
+		if (index > 0 && index < size2 - 1) {
+			Element<T>* toRemove = getElemAtIndex(index);
+			(toRemove->getPrevious())->setNext(toRemove->getNext());
+			(toRemove->getNext())->setPrevious(toRemove->getPrevious());
+			//toRemove->setNext(nullptr);
+			//toRemove->setPrevious(nullptr);
+			delete toRemove;
+			--size2;
+		}
+	}
 }
 
 template <typename T>
@@ -67,6 +94,7 @@ void List<T>::removeFromBack() {
 
 template <typename T>
 void List<T>::insertOnFront(T* elem) {
+	++size2;
 	Element<T>* newElem = new Element<T>;
 	newElem->setElement(elem);
 	newElem->setPrevious(nullptr);
@@ -74,29 +102,55 @@ void List<T>::insertOnFront(T* elem) {
 		newElem->setNext(nullptr);
 		head = newElem;
 		tail = newElem;
+		newElem->getElement()->setPositionInList(getElemAtIndex(0)); //ustawiam pozycje na index 0
 	}
 	else {
 		newElem->setNext(head);
 		head->setPrevious(newElem);
 		head = newElem;
+		newElem->getElement()->setPositionInList(getElemAtIndex(0)); //ustawiam pozycje na index 0
 	}
-	++size2;
+}
+
+template <typename T>
+void List<T>::insertAfter(int index, T* newElem) {
+	if (index < 0 || index >= size2) {
+		std::cout << "Zly indeks!" << std::endl;
+	}
+	else {
+		if (index == size2 - 1) {
+			insertOnBack(newElem);
+			return;
+		}
+		else {
+			Element<T>* toAdd = new Element<T>();
+			toAdd->setElement(newElem);
+			toAdd->setPrevious(getElemAtIndex(index));
+			toAdd->setNext(getElemAtIndex(index)->getNext());
+			getElemAtIndex(index)->getNext()->setPrevious(toAdd);
+			getElemAtIndex(index)->setNext(toAdd);
+			toAdd->getElement()->setPositionInList(getElemAtIndex(index + 1)); //usatwiam pozycje elementu w liœcie
+			++size2;
+		}
+	}
 }
 
 template <typename T>
 void List<T>::insertOnBack(T* elem) {
+	++size2;
 	Element<T>* newElem = new Element<T>();
 	newElem->setElement(elem);
 	if (tail == nullptr && head ==nullptr) {
 		head = newElem;
 		tail = newElem;
+		newElem->getElement()->setPositionInList(getElemAtIndex(size2-1)); //ustawiam pozycje na index ostatni
 	}
 	else {
 		newElem->setPrevious(tail);
 		tail->setNext(newElem);
 		tail = newElem;
+		newElem->getElement()->setPositionInList(getElemAtIndex(size2 - 1)); //ustawiam pozycje na index ostatni
 	}
-	++size2;
 }
 
 template <typename T>
@@ -146,6 +200,32 @@ void List<T>::swap(T* elem1, T* elem2) {
 template <typename T>
 Element<T>* List<T>::getHead() const {
 	return head;
+}
+
+template <typename T>
+Element<T>* List<T>::getTail() const {
+	return tail;
+}
+
+template <typename T>
+Element<T>* List<T>::getElemAtIndex(int index) const {
+	int count = 0;
+	Element<T>* tmp = head;
+	if (index >= size2) {
+		std::cout << "Wykroczono poza zakres";
+		return nullptr;
+	}
+	do {
+		if (count == index) {
+			return tmp;
+		}
+		else {
+			count++;
+			tmp = tmp->getNext();
+		}
+	} while (tmp != nullptr);
+
+	return nullptr;
 }
 
 template <typename T>

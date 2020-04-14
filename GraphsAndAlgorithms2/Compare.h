@@ -1,5 +1,6 @@
 #pragma once
 #include "Qelement.h"
+#include "Edge.h"
 template < typename T,typename t>
 class Compare {
 public:
@@ -11,4 +12,26 @@ public:
 			return false; //zwraca false
 		}
 	}
+
+	bool operator() (Vertex<T> elem1, Vertex<T> elem2) {
+		if (elem1.getPoint() == elem2.getPoint()) {  //jesli wartosc/nazwa wierzcho³ka elem1 jest równa
+			return true; //zwraca prawdê
+		}
+		else { //jeœli inna
+			return false; //zwraca false
+		}
+	}
+
+	bool operator() (Edge<T> elem1, Edge<T> elem2) {
+		Compare<T,t> comp;
+		if (comp(*(elem1.getStartOfEdge()),*(elem2.getStartOfEdge())) && comp(*(elem1.getEndOfEdge()), *(elem2.getEndOfEdge())) && (elem1.getWeight()==elem2.getWeight())) {  //jesli wartosc/nazwa wierzcho³ka elem1 jest równa
+			return true; //zwraca prawdê
+		}
+		else { //jeœli inna
+			return false; //zwraca false
+		}
+	}
+	
+
+	
 };
