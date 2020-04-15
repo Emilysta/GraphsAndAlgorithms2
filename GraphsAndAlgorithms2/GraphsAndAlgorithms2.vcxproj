@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Compare.h" />
+    <ClInclude Include="DijkstraAlgorithm.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Element.h" />
     <ClInclude Include="GenerateGraphs.h" />

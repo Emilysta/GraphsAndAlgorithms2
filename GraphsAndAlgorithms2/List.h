@@ -9,9 +9,9 @@ class List {
 public:
 	List();
 	~List();
-	void removeFromFront();
-	void removeAtIndex(int index);
-	void removeFromBack();
+	T* removeFromFront();
+	T* removeAtIndex(int index);
+	T* removeFromBack();
 	void insertOnFront(T* elem);
 	void insertAfter(int index, T* newElem);
 	void insertOnBack(T* elem);
@@ -23,6 +23,7 @@ public:
 	Element<T>* getTail() const;
 	Element<T>* getElemAtIndex(int index) const; //zwraca "opakowanie" o indeksie
 	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
+	T* findElem(T* elem) const;
 };
 
 template <typename T>
@@ -41,27 +42,28 @@ List<T>::~List() {
 }
 
 template <typename T>
-void List<T>::removeFromFront() {
+T* List<T>::removeFromFront() {
 	if (size2 != 0) {
 		Element<T>* toRemove = head;
 		head = toRemove->getNext();
 		toRemove->setNext(nullptr);
-		delete toRemove;
 		--size2;
+		return toRemove->getElement();
 	}
 }
 
 template <typename T>
-void List<T>::removeAtIndex(int index) {
+T* List<T>::removeAtIndex(int index) {
 	if (index < 0 || index >= size2) {
 		std::cout << "Zly indeks!" << std::endl;
+		return nullptr;
 	}
 	else {
 		if (index == 0) {
-			removeFromFront();
+			return removeFromFront();
 		}
 		if (index == size2 - 1) {
-			removeFromBack();
+			 return removeFromBack();
 		}
 		if (index > 0 && index < size2 - 1) {
 			Element<T>* toRemove = getElemAtIndex(index);
@@ -69,27 +71,26 @@ void List<T>::removeAtIndex(int index) {
 			(toRemove->getNext())->setPrevious(toRemove->getPrevious());
 			//toRemove->setNext(nullptr);
 			//toRemove->setPrevious(nullptr);
-			delete toRemove;
 			--size2;
+			return toRemove->getElement();
 		}
 	}
 }
 
 template <typename T>
-void List<T>::removeFromBack() {
+T* List<T>::removeFromBack() {
 	Element<T>* toRemove = tail;
 	if (size2 > 1) {
 		tail = toRemove->getPrevious();
 		tail->setNext(nullptr);
 		toRemove->setPrevious(nullptr);
-		delete toRemove;
 	}
 	else {
 		tail = nullptr;
 		head = nullptr;
-		delete toRemove;
 	}
 	--size2;
+	return toRemove->getElement();
 }
 
 template <typename T>
@@ -246,5 +247,22 @@ T* List<T>::operator [](int toSearch) const {
 		}
 	} while (tmp != nullptr);
 
+	return nullptr;
+}
+
+template <typename T>
+T* List<T>::findElem(T* elem) const {
+	if (!isEmpty()) {
+		Element<T>* tmp = head;
+		Compare<Vertex<int>, int> comp;
+		do {
+			if (comp(*elem, *(tmp->getElement()))) {
+				return tmp->getElement();
+			}
+			else {
+				tmp = tmp->getNext();
+			}
+		} while (tmp != nullptr);
+	}
 	return nullptr;
 }

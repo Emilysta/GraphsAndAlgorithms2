@@ -36,6 +36,19 @@ Matrix<T>::Matrix(int n) {
 	}
 }
 
+Matrix<int>::Matrix(int n) {
+	numberOfPoints = n;
+	matrix = new int * [numberOfPoints];
+	for (int i = 0; i < numberOfPoints; i++) {
+		matrix[i] = new int[numberOfPoints];
+	}
+	for (int i = 0; i < numberOfPoints; i++) {
+		for (int j = 0; j < numberOfPoints; j++) {
+			matrix[i][j] = 0;
+		}
+	}
+}
+
 template <typename T>
 Matrix<T>::~Matrix() {
 	for (int i = 0; i < numberOfPoints; i++) {

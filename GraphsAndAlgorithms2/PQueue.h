@@ -10,6 +10,7 @@ public:
 	bool isEmpty() const;
 	int size();
 	void show();
+	void showWithVertex();
 	void insert(t key, T* data);
 	Qelement<T,t>* removeMin(); //zwraca dane:klucz,wierzcho³ek i usuwa
 	Qelement<T,t>* min(); //zwraca dane:klucz,wierzcho³ek
@@ -23,6 +24,7 @@ public:
 	int Right(int i) {
 		return (2*i+2);
 	}
+	List<Qelement<T, t>>* getHeapOnList();
 };
 
 template <typename T,typename t>
@@ -51,6 +53,17 @@ void PQueue<T, t>::show() { //wyœwietlenie kluczy
 }
 
 template <typename T, typename t>
+void PQueue<T, t>::showWithVertex() {
+	for (int i = 0; i < HeapOnList->size(); i++) {
+		std::cout << (*HeapOnList)[i]->getKey();
+		std::cout << "   .   ";
+		(*HeapOnList)[i]->getData()->show();
+		std::cout << std::endl;
+	}
+}
+
+
+template <typename T, typename t>
 void  PQueue<T,t>::insert(t key, T* data) {
 	int i = HeapOnList->size();
 	Compare<T,t> comp; //komparator
@@ -63,11 +76,18 @@ void  PQueue<T,t>::insert(t key, T* data) {
 
 template <typename T, typename t>
 Qelement<T,t>* PQueue<T,t>::removeMin() { //czy tu dobrze?
-	Qelement<T, t>* tmp = (*HeapOnList)[0];
-
+	int size = HeapOnList->size();
+	if (size == 1) {
+		return HeapOnList->removeFromFront();
+	}
 	if (!HeapOnList->isEmpty()) {
+		Qelement<T, t>* tmp = new Qelement<T, t>();
+		HeapOnList->swap((*HeapOnList)[0], (*HeapOnList)[size - 1]);
+		tmp = HeapOnList->removeFromBack();
+		repair();
 		return tmp;
 	}
+	return nullptr;
 }
 
 template <typename T, typename t>
@@ -80,9 +100,9 @@ void PQueue<T, t>::repair(int i) {
 	int left = Left(i);
 	int right = Right(i);
 	int min = i;
+	Compare<T, t> comp;
 	if (left < HeapOnList->size() && comp((*HeapOnList)[left], (*HeapOnList)[min])) {  //comp(elem1, elem2) zwraca prawde 
 		min = left;												//gdy klucz z elem 1 jest mniejszy od klucza z elem 2
-		min = right;
 	}
 	if (right < HeapOnList->size() && comp((*HeapOnList)[right], (*HeapOnList)[min])) {
 		min = right;
@@ -93,6 +113,13 @@ void PQueue<T, t>::repair(int i) {
 		repair(min);
 	}
 }
+
+
+template <typename T, typename t>
+List<Qelement<T,t>>* PQueue<T, t>::getHeapOnList() {
+	return HeapOnList;
+}
+
 
 
 

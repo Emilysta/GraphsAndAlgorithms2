@@ -7,8 +7,8 @@ class GraphOnMatrix
 {
 	ListV* listOfVertices;
 	List<Edge<T>>* listOfEdges;
-	Matrix<Edge<T>*>* aMatrix; //short version of adjacency matrix - macierz s¹siedztwa;
-	int startVertex;
+	Matrix<Edge<T>*>* aMatrix;// macierz s¹siedztwa;
+	Vertex<int>* startVertex;
 
 public:
 	GraphOnMatrix();
@@ -19,12 +19,18 @@ public:
 	void insertEdge(Vertex<int>* v,Vertex<int>* w,T weight);
 	bool removeVertex(Vertex<int> v);
 	bool removeEdge(Edge<T> e);
-	void incidentEdges();
+	List<Edge<T>>* incidentEdges(Vertex<T>* v);
 	List<Edge<T>>* edges();
 	void showEdges();
 	ListV* vertices();
 	void showVertices();
 	Vertex<int>** endVertices(Edge<T>* e);
+	Vertex<int>* opposite(Vertex<int>* v, Edge<T>* e);
+	bool areAdjacent(Vertex<int>* v, Vertex<int>* w);//true jesli s¹ s¹siednie, false jeœli nie s¹
+	void replaceV(Vertex<int>* v, int number);
+	void replaceE(Edge<T>* e, T weight);
+	void repairMatrix();
+	Vertex<int>* getStartVertex();
 };
 
 template < typename T >
@@ -46,6 +52,7 @@ template <typename T>
 void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Wazne
 	int numberOfEdges;
 	int numberOfVertices;
+	int start;
 
 	int row;  //startpoint of edge
 	int column; //endpoint 
@@ -54,11 +61,12 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 
 	file.open(nameOfFile.c_str());
 	if (file.good()) {
-		file >> numberOfEdges >> numberOfVertices >> startVertex;
+		file >> numberOfEdges >> numberOfVertices >> start;
 		aMatrix = new Matrix<Edge<T>*>(numberOfVertices);
 		for (int i = 0; i < numberOfVertices; i++) {
 			listOfVertices->insertOnBack(new Vertex<int>(i)); //no i trzeba te wskazniki na sameg siebie!!!!
 		}
+		startVertex = (*listOfVertices)[start];
 		while (!file.eof())
 		{
 			file >> row >> column >> weight;
@@ -84,8 +92,8 @@ void GraphOnMatrix<T>::show() {
 	std::cout << "Liczba wierzcholkow: ";
 	std::cout << listOfVertices->size();
 	std::cout << std::endl;
-	std::cout << "Wierzcholek startowy: " << startVertex << std::endl;
-
+	std::cout << "Wierzcholek startowy: " << startVertex->getPoint() << std::endl;
+	this->showVertices();
 	aMatrix->show();
 }
 
@@ -144,8 +152,18 @@ bool GraphOnMatrix<T>::removeEdge(Edge<T> e) {
 }
 
 template <typename T>
-void GraphOnMatrix<T>::incidentEdges() {
-
+List<Edge<T>>* GraphOnMatrix<T>::incidentEdges(Vertex<T>* v) {
+	Compare<T, int> comp;
+	List<Edge<T>>* list= new List<Edge<T>>();
+	for (int i = 0; i < listOfEdges->size(); i++) {
+		if (comp(*v, *((*listOfEdges)[i]->getStartOfEdge()))) {
+			list->insertOnBack((*listOfEdges)[i]);
+		}
+		if (comp(*v, *((*listOfEdges)[i]->getEndOfEdge()))) {
+			list->insertOnBack((*listOfEdges)[i]);
+		}
+	}
+	return list;
 }
 
 template <typename T>
@@ -176,3 +194,63 @@ Vertex<int>** GraphOnMatrix<T>::endVertices(Edge<T>* e){
 	array[1] = e->getEndOfEdge();
 	return array;
 }
+
+template <typename T>
+Vertex<int>* GraphOnMatrix<T>::opposite(Vertex<int>* v, Edge<T>* e) {
+	Compare<T, int> comp;
+	for (int i = 0; i < listOfEdges->size(); i++) {
+		if (comp(*e, *((*listOfEdges)[i]))) {
+			if (comp(*v, *((*listOfEdges)[i]->getStartOfEdge()))) {
+				return (*listOfEdges)[i]->getEndOfEdge();
+			}
+			if (comp(*v, *((*listOfEdges)[i]->getEndOfEdge()))) {
+				return (*listOfEdges)[i]->getStartOfEdge();
+			}
+		}
+	}
+	return nullptr;
+}
+
+template <typename T>
+bool GraphOnMatrix<T>::areAdjacent(Vertex<int>* v, Vertex<int>* w) {
+	Compare<T, int> comp;
+	for (int i = 0; i < listOfEdges->size(); i++) {
+		if (comp(*v, *((*listOfEdges)[i]->getStartOfEdge())) || comp(*v, *((*listOfEdges)[i]->getEndOfEdge()))) {
+			if (comp(*w, *((*listOfEdges)[i]->getEndOfEdge())) || comp(*w, *((*listOfEdges)[i]->getStartOfEdge()))) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+template <typename T>
+void GraphOnMatrix<T>::replaceV(Vertex<int>* v, int number) {
+	Compare<T, int> comp;
+	for (int i = 0; i < listOfVertices->size(); i++) {
+		if (comp(*v, *((*listOfVertices)[i]))) {
+			(*listOfVertices)[i]->setPoint(number);
+		}
+	}
+}
+
+template <typename T>
+void GraphOnMatrix<T>::replaceE(Edge<T>* e, T weight) {
+	Compare<T, int> comp;
+	for (int i = 0; i < listOfEdges->size(); i++) {
+		if (comp(*e, *((*listOfEdges)[i]))) {
+			(*listOfEdges)[i]->setWeight(weight);
+		}
+	}
+}
+
+template <typename T>
+void GraphOnMatrix<T>::repairMatrix() {
+
+}
+
+template <typename T>
+Vertex<int>* GraphOnMatrix<T>::getStartVertex() {
+	return startVertex;
+}
+
