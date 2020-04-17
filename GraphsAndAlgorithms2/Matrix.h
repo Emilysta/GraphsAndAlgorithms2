@@ -14,6 +14,7 @@ public:
 	void show();
 	void setElement(int row, int column, T element);
 	T getElement(int row, int column) const;
+	int getNumberOfPoints();
 };
 
 template <typename T>
@@ -90,4 +91,9 @@ void Matrix<T>::setElement(int row, int column, T element) {
 template <typename T>
 T Matrix<T>::getElement(int row, int column) const {
 	return matrix[row][column];
+}
+
+template <typename T>
+int Matrix<T>::getNumberOfPoints() {
+	return numberOfPoints;
 }

@@ -12,6 +12,8 @@ public:
 	void show();
 	void showWithVertex();
 	void insert(t key, T* data);
+	void insert(Qelement<T,t>* o);
+	void replaceKey(T* z, t newKey, int prev);
 	Qelement<T,t>* removeMin(); //zwraca dane:klucz,wierzcho³ek i usuwa
 	Qelement<T,t>* min(); //zwraca dane:klucz,wierzcho³ek
 	void repair(int i = 0);
@@ -55,9 +57,11 @@ void PQueue<T, t>::show() { //wyœwietlenie kluczy
 template <typename T, typename t>
 void PQueue<T, t>::showWithVertex() {
 	for (int i = 0; i < HeapOnList->size(); i++) {
+		(*HeapOnList)[i]->getData()->show();
+		std::cout << "   .   ";
 		std::cout << (*HeapOnList)[i]->getKey();
 		std::cout << "   .   ";
-		(*HeapOnList)[i]->getData()->show();
+		std::cout << (*HeapOnList)[i]->getPrev();
 		std::cout << std::endl;
 	}
 }
@@ -69,6 +73,16 @@ void  PQueue<T,t>::insert(t key, T* data) {
 	Compare<T,t> comp; //komparator
 	HeapOnList->insertOnBack(new Qelement<T,t>(key, data));
 	while (i != 0 && comp((*HeapOnList)[i],(*HeapOnList)[Parent(i)])) { //comp(elem1, elem2) zwraca prawde 
+		HeapOnList->swap((*HeapOnList)[i], (*HeapOnList)[Parent(i)]); //gdy klucz z elem 1 jest mniejszy od klucza z elem 2
+		i = Parent(i);
+	}
+}
+template <typename T, typename t>
+void  PQueue<T, t>::insert(Qelement<T, t>* o) {
+	int i = HeapOnList->size();
+	Compare<T, t> comp; //komparator
+	HeapOnList->insertOnBack(o);
+	while (i != 0 && comp((*HeapOnList)[i], (*HeapOnList)[Parent(i)])) { //comp(elem1, elem2) zwraca prawde 
 		HeapOnList->swap((*HeapOnList)[i], (*HeapOnList)[Parent(i)]); //gdy klucz z elem 1 jest mniejszy od klucza z elem 2
 		i = Parent(i);
 	}
@@ -114,6 +128,10 @@ void PQueue<T, t>::repair(int i) {
 	}
 }
 
+template <typename T, typename t>
+void PQueue<T, t>::replaceKey(T* z, t newKey, int prev) {
+	//HeapOnList->findElem(new Qelement<T, t>()
+}
 
 template <typename T, typename t>
 List<Qelement<T,t>>* PQueue<T, t>::getHeapOnList() {

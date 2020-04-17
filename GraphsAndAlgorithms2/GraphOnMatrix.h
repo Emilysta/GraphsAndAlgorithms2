@@ -17,8 +17,8 @@ public:
 	void show();
 	void insertVertex(int o);
 	void insertEdge(Vertex<int>* v,Vertex<int>* w,T weight);
-	bool removeVertex(Vertex<int> v);
-	bool removeEdge(Edge<T> e);
+	bool removeVertex(Vertex<int>* v);
+	bool removeEdge(Edge<T>* e);
 	List<Edge<T>>* incidentEdges(Vertex<T>* v);
 	List<Edge<T>>* edges();
 	void showEdges();
@@ -99,69 +99,87 @@ void GraphOnMatrix<T>::show() {
 
 template <typename T>
 void GraphOnMatrix<T>::insertVertex(int o) {
-	Vertex<int>* v = new Vertex<int>(o);
-	listOfVertices->insertOnBack(v);
+	if (o == listOfVertices->size()) {
+		Vertex<int>* v = new Vertex<int>(o);
+		listOfVertices->insertOnBack(v);
+		repairMatrix();
+	}
+	else {
+		std::cerr << "nie da siê dodaæ wierzcho³aka o podanym numerze, albo juz istnieje, albo nie mia³by powiazania z numerami porzednimi"<<std::endl;
+	}
 }
 
 template <typename T>
-void GraphOnMatrix<T>::insertEdge(Vertex<int>* v, Vertex<int>* w, T weight) {
-	Edge<T>* edge = new Edge<T>(weight, nullptr, v, w);
-	listOfEdges->insertOnBack(edge);
-	aMatrix->setElement(v->getPoint(),w->getPoint(),edge);
-	aMatrix->setElement(w->getPoint(),v->getPoint(),edge);
-	edge = nullptr;
-}
-
-template <typename T>
-bool GraphOnMatrix<T>::removeVertex(Vertex<int> v) { 
-	Compare<T, int> comp;
-	for (int i = 0; i < listOfVertices->size(); i++) {
-		if (comp(v, *(*listOfVertices)[i])) {
-			for (int j = 0; j < listOfVertices->size(); j++) {
-				if (aMatrix->getElement(j, i) != nullptr) {
-					removeEdge(*aMatrix->getElement(j, i));
-					aMatrix->setElement(j, i, nullptr);
-				}
-				if (aMatrix->getElement(i, j) != nullptr) {
-					removeEdge(*aMatrix->getElement(i, j));
-					aMatrix->setElement(i, j, nullptr);
-				}
-			}
-			listOfVertices->removeAtIndex(i);
-			return true;
+void GraphOnMatrix<T>::repairMatrix() {
+	int size =listOfVertices->size();
+	Matrix<Edge<T>*> tmp = *aMatrix;
+	aMatrix = new Matrix<Edge<T>*>(size);
+	for (int i = 0; i < size-1; i++) { //przepisanie macierzy
+		for (int j = 0; j < size-1; j++) {
+			aMatrix->setElement(i, j, tmp.getElement(i, j));
 		}
 	}
-	return false;
-} 
-//do poprawy bo trzeba usunac kraedzie przylegajace
+}
 
 template <typename T>
-bool GraphOnMatrix<T>::removeEdge(Edge<T> e) {
+void GraphOnMatrix<T>::insertEdge(Vertex<int>* v, Vertex<int>* w, T weight) { //dodawanie tylko jesli takie wierzcholki istnieja
+	if ((v->getPoint() >= 0 && v->getPoint() < listOfVertices->size()) && (w->getPoint() >= 0 && w->getPoint() < listOfVertices->size())) {
+		Edge<T>* edge = new Edge<T>(weight, nullptr, v, w);
+		listOfEdges->insertOnBack(edge);
+		aMatrix->setElement(v->getPoint(), w->getPoint(), edge);
+		aMatrix->setElement(w->getPoint(), v->getPoint(), edge);
+		edge = nullptr;
+	}
+	else {
+		std::cerr << "Jeden z wierzcholkow lub wierzcholki nie istnieja" << std::endl;
+	}
+}
+
+template <typename T>
+bool GraphOnMatrix<T>::removeVertex(Vertex<int>* v) { //usuwa powiazania ale zostawia macierz danej wielkosci jaka byla
+	if (listOfVertices->findElem(v)!=nullptr){
+		for (int j = 0; j < listOfVertices->size(); j++) {
+			if (aMatrix->getElement(j, v->getPoint()) != nullptr) {
+				removeEdge(aMatrix->getElement(j, v->getPoint()));
+				aMatrix->setElement(j, v->getPoint(), nullptr);
+			}
+			if (aMatrix->getElement(v->getPoint(), j) != nullptr) {
+				removeEdge(aMatrix->getElement(v->getPoint(), j));
+				aMatrix->setElement(v->getPoint(), j, nullptr);
+			}
+		}
+		listOfVertices->removeAtIndex(v->getPoint());
+		std::cout << "usunieto z listy vierzcholokow wraz z powiazaniami" << std::endl;
+		return true;
+	}
+	std::cerr << "nie usunieto wierzcholka" << std::endl;
+	return false;
+} 
+
+template <typename T>
+bool GraphOnMatrix<T>::removeEdge(Edge<T>* e) {//usuwa krawedz z istniejacych
 	Compare<T, int> comp;
+
 	for (int i = 0; i < listOfEdges->size(); i++) {
-		if (comp(e, *(*listOfEdges)[i])) {
-			int row = (*listOfEdges)[i]->getStartOfEdge()->getPoint();
-			int column =(*listOfEdges)[i]->getEndOfEdge()->getPoint();
+		if (comp(*e, *(*listOfEdges)[i])) {
+			int row = e->getStartOfEdge()->getPoint();
+			int column = e->getEndOfEdge()->getPoint();
 			aMatrix->setElement(row, column, nullptr);
 			aMatrix->setElement(column, row, nullptr);
 			listOfEdges->removeAtIndex(i);
 			return true;
 		}
 	}
+	std::cerr << "nie usunieto krawedzi" << std::endl;
 	return false;
 }
 
 template <typename T>
 List<Edge<T>>* GraphOnMatrix<T>::incidentEdges(Vertex<T>* v) {
-	Compare<T, int> comp;
-	List<Edge<T>>* list= new List<Edge<T>>();
-	for (int i = 0; i < listOfEdges->size(); i++) {
-		if (comp(*v, *((*listOfEdges)[i]->getStartOfEdge()))) {
-			list->insertOnBack((*listOfEdges)[i]);
-		}
-		if (comp(*v, *((*listOfEdges)[i]->getEndOfEdge()))) {
-			list->insertOnBack((*listOfEdges)[i]);
-		}
+	List<Edge<T>>* list = new List<Edge<T>>();
+	for (int i = 0; i < listOfVertices->size(); i++) {
+		if (aMatrix->getElement(v->getPoint(),i) != nullptr)
+			list->insertOnBack(aMatrix->getElement(v->getPoint(), i));
 	}
 	return list;
 }
@@ -197,56 +215,45 @@ Vertex<int>** GraphOnMatrix<T>::endVertices(Edge<T>* e){
 
 template <typename T>
 Vertex<int>* GraphOnMatrix<T>::opposite(Vertex<int>* v, Edge<T>* e) {
-	Compare<T, int> comp;
-	for (int i = 0; i < listOfEdges->size(); i++) {
-		if (comp(*e, *((*listOfEdges)[i]))) {
-			if (comp(*v, *((*listOfEdges)[i]->getStartOfEdge()))) {
-				return (*listOfEdges)[i]->getEndOfEdge();
-			}
-			if (comp(*v, *((*listOfEdges)[i]->getEndOfEdge()))) {
-				return (*listOfEdges)[i]->getStartOfEdge();
-			}
-		}
+	//Compare<T, int> comp;
+	//int number = v->getPoint();
+	//for(int i = 0; i<listOfVertices->size();i++){
+	//	if (aMatrix->getElement(number, i) != nullptr) {
+	//		if ( comp(*e, *aMatrix->getElement(number, i)) ) {
+	//			if (comp(*v, *aMatrix->getElement(number, i)->getStartOfEdge())) {
+	//				return aMatrix->getElement(number, i)->getEndOfEdge();
+	//			}
+	//			if (comp(*v, *aMatrix->getElement(number, i)->getEndOfEdge())) {
+	//				return aMatrix->getElement(number, i)->getStartOfEdge();
+	//			}
+	//		}
+	//	}
+	//}
+	if (v->getPoint()!= e->getStartOfEdge()->getPoint()) {
+		return e->getStartOfEdge();
 	}
-	return nullptr;
+	else{
+		return e->getEndOfEdge();
+	}
+	//return nullptr;
 }
 
 template <typename T>
 bool GraphOnMatrix<T>::areAdjacent(Vertex<int>* v, Vertex<int>* w) {
-	Compare<T, int> comp;
-	for (int i = 0; i < listOfEdges->size(); i++) {
-		if (comp(*v, *((*listOfEdges)[i]->getStartOfEdge())) || comp(*v, *((*listOfEdges)[i]->getEndOfEdge()))) {
-			if (comp(*w, *((*listOfEdges)[i]->getEndOfEdge())) || comp(*w, *((*listOfEdges)[i]->getStartOfEdge()))) {
-				return true;
-			}
-		}
+	if (aMatrix->getElement(v->getPoint(), w->getPoint()) != nullptr) {
+		return true;
 	}
 	return false;
 }
 
 template <typename T>
 void GraphOnMatrix<T>::replaceV(Vertex<int>* v, int number) {
-	Compare<T, int> comp;
-	for (int i = 0; i < listOfVertices->size(); i++) {
-		if (comp(*v, *((*listOfVertices)[i]))) {
-			(*listOfVertices)[i]->setPoint(number);
-		}
-	}
+	v->setPoint(number);
 }
 
 template <typename T>
 void GraphOnMatrix<T>::replaceE(Edge<T>* e, T weight) {
-	Compare<T, int> comp;
-	for (int i = 0; i < listOfEdges->size(); i++) {
-		if (comp(*e, *((*listOfEdges)[i]))) {
-			(*listOfEdges)[i]->setWeight(weight);
-		}
-	}
-}
-
-template <typename T>
-void GraphOnMatrix<T>::repairMatrix() {
-
+	e->setWeight(weight);
 }
 
 template <typename T>

@@ -231,24 +231,28 @@ Element<T>* List<T>::getElemAtIndex(int index) const {
 
 template <typename T>
 T* List<T>::operator [](int toSearch) const {
-	int count = 0;
+
 	Element<T>* tmp = head;
 	if (toSearch >= size2) {
 		std::cout << "Wykroczono poza zakres";
 		return nullptr;
 	}
-	do {
-		if (count==toSearch){
-			return tmp->getElement();
-		}
-		else {
-			count++;
-			tmp = tmp->getNext();
-		}
-	} while (tmp != nullptr);
-
-	return nullptr;
+	for (int i = 0; i < toSearch; i++)
+		tmp = tmp->getNext();
+	return tmp->getElement();
 }
+//	do {
+//		if (count==toSearch){
+//			return tmp->getElement();
+//		}
+//		else {
+//			count++;
+//			tmp = tmp->getNext();
+//		}
+//	} while (tmp != nullptr);
+//
+//	return nullptr;
+//}
 
 template <typename T>
 T* List<T>::findElem(T* elem) const {

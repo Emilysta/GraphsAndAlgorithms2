@@ -36,11 +36,22 @@ void testListOfVertices() {
 	delete list;
 }
 void graphTest() {
-	std::string name = "E:\\Code\\GraphsAndAlgorithms2\\test.txt";
+	std::string name = "E:\\Code\\Pliki\\c10d25x38.txt";// GraphsAndAlgorithms2\\test.txt";
 	std::cout << name;
 	GraphOnMatrix<int>* graph = new GraphOnMatrix<int>();
 	graph->fillGraph(name);
-	graph->show();
+	//graph->show();
+	//if (graph->areAdjacent(new Vertex<int>(1), new Vertex<int>(0))) {
+	//	std::cout << "sa sasiednie"<<std::endl;
+	//}
+	//graph->insertVertex(4);
+	//graph->show();
+	//graph->insertEdge(new Vertex<int>(2), new Vertex<int>(4), 6);
+	//graph->show();
+	//graph->removeVertex(new Vertex<int>(4));
+	//graph->show();
+	//graph->removeEdge(new Edge<int>(4, nullptr, new Vertex<int>(0), new Vertex<int>(1)));
+	//graph->show();
 	////graph->vertices();
 	////graph->edges();
 	//Vertex<int>** arr = graph->endVertices(new Edge<int>(4, nullptr, new Vertex<int>(0), new Vertex<int>(1)));
@@ -63,10 +74,13 @@ void graphTest() {
 	//graph->replaceV(new Vertex<int>(0), 7);
 	//graph->replaceE(new Edge<int>(4, nullptr, new Vertex<int>(7), new Vertex<int>(1)), 5);
 	//graph->show();
-	std::cout << "Dlugosc najkrotszych sciezek dla wierzcholkkow: \n";
-	std::cout << "Dlug . Wierzcholek \n";
 	PQueue<Vertex<int>, int>* queue = Dijkstra(graph);
+	std::cout << "Dlugosc najkrotszych sciezek dla wierzcholkkow: \n";
+	std::cout << "w K . dlug . w p \n";
 	queue->showWithVertex();
+	//graph->replaceV((*graph->vertices())[3], 4);
+	//graph->replaceE((*graph->edges())[0], 8);
+	//graph->show();
 	delete graph;
 }
 void priorityQueueTest() {
@@ -75,6 +89,11 @@ void priorityQueueTest() {
 	queue->insert(0, new Vertex<int>(1));
 	queue->insert(5, new Vertex<int>(2));
 	queue->insert(7, new Vertex<int>(3));
+	queue->insert(1, new Vertex<int>(4));
+	queue->insert(15, new Vertex<int>(0));
+	queue->insert(0, new Vertex<int>(1));
+	queue->insert(2, new Vertex<int>(2));
+	queue->insert(4, new Vertex<int>(3));
 	queue->insert(1, new Vertex<int>(4));
 
 	queue->show();
@@ -85,14 +104,24 @@ void priorityQueueTest() {
 	std::cout << queue->removeMin()->getKey() << std::endl;
 	queue->show();
 	std::cout << queue->removeMin()->getKey() << std::endl;
-
-	//std::cout<<queue->min()->getKey();
+	queue->show();
+	std::cout << queue->removeMin()->getKey() << std::endl;
+	queue->show();
+	std::cout << queue->removeMin()->getKey() << std::endl;
+	queue->show();
+	queue->insert(1, new Vertex<int>(4));
+	queue->show();
+	std::cout << queue->removeMin()->getKey() << std::endl;
+	queue->show();
+	std::cout << queue->removeMin()->getKey() << std::endl;
+	queue->show();
+	std::cout << queue->removeMin()->getKey() << std::endl;
 }
 
 int main() {
 	//testListOfVertices();
-	//graphTest();
-	GenerateGraphsToFile<int>();
+	graphTest();
+	//GenerateGraphsToFile<int>();
 	//priorityQueueTest();
 	std::cin.ignore();
 	return 0;
