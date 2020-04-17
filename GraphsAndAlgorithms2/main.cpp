@@ -36,8 +36,7 @@ void testListOfVertices() {
 	delete list;
 }
 void graphTest() {
-	std::string name = "E:\\Code\\Pliki\\c10d25x38.txt";// GraphsAndAlgorithms2\\test.txt";
-	std::cout << name;
+	std::string name = "E:\\Code\\Pliki\\c500d25x38.txt";// GraphsAndAlgorithms2\\test.txt";
 	GraphOnMatrix<int>* graph = new GraphOnMatrix<int>();
 	graph->fillGraph(name);
 	//graph->show();

@@ -24,6 +24,7 @@ public:
 	Element<T>* getElemAtIndex(int index) const; //zwraca "opakowanie" o indeksie
 	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
 	T* findElem(T* elem) const;
+	T* findAndDelete(T* elem);
 };
 
 template <typename T>
@@ -264,6 +265,37 @@ T* List<T>::findElem(T* elem) const {
 				return tmp->getElement();
 			}
 			else {
+				tmp = tmp->getNext();
+			}
+		} while (tmp != nullptr);
+	}
+	return nullptr;
+}
+
+
+template <typename T>
+T* List<T>::findAndDelete(T* elem) {
+	if (!isEmpty()) {
+		int count = 0;
+		Element<T>* tmp = head;
+		Compare<Vertex<int>, int> comp;
+		do {
+			if (comp(*elem, *(tmp->getElement()))) {
+				if (count == 0) {
+					return removeFromFront();
+				}
+				if (count == size2 - 1) {
+					return removeFromBack();
+				}
+				else {
+					(tmp->getPrevious())->setNext(tmp->getNext());
+					(tmp->getNext())->setPrevious(tmp->getPrevious());
+					--size2;
+					return tmp->getElement();
+				}
+			}
+			else {
+				count++;
 				tmp = tmp->getNext();
 			}
 		} while (tmp != nullptr);

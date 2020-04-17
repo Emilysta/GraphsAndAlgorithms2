@@ -72,18 +72,18 @@ PQueue <Vertex<int>, t>*  Dijkstra(GraphOnMatrix<t>* graph) {
 			t number = elemPQ->getKey() + (*incidentEdges)[i]->getWeight();
 			if (arr[z->getPoint()] != false) {
 				Qelement<Vertex<int>, t>* o = new Qelement<Vertex<int>, t>();
-				o = Q->getHeapOnList()->findElem(new Qelement<Vertex<int>, t>(0, z));
+				o = Q->getHeapOnList()->findAndDelete(new Qelement<Vertex<int>, t>(0, z));
 
 				if (number < o->getKey()) {
 					o->setKey(number);
 					o->setPrev(elemPQ->getData()->getPoint());
-
+					//Q->insert(o);
 				}
+				Q->insert(o);
 			}
 		}
-		Q->repair();
 	}
-	return S;
+	
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 	std::cout << "algorytm: "<< duration.count() << "ms\n";

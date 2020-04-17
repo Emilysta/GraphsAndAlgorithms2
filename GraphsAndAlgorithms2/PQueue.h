@@ -128,10 +128,6 @@ void PQueue<T, t>::repair(int i) {
 	}
 }
 
-template <typename T, typename t>
-void PQueue<T, t>::replaceKey(T* z, t newKey, int prev) {
-	//HeapOnList->findElem(new Qelement<T, t>()
-}
 
 template <typename T, typename t>
 List<Qelement<T,t>>* PQueue<T, t>::getHeapOnList() {
