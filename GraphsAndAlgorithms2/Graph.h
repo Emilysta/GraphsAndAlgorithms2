@@ -1,19 +1,23 @@
 #pragma once
 #include "List.h"
 #include "Edge.h"
+template <typename T>
 class Graph {
 protected:
-	int numberOfVertices = 0;
-	int numberOfEdges = 0;
-	int startingVertex = 0;
+	List<Vertex<int,T>>* listOfVertices;
+	List<Edge<T>>* listOfEdges;
+	Vertex<int,T>* startVertex;
 
 public:
-	int GetVertices() { return numberOfVertices; }
-	int GetEdges() { return numberOfEdges; }
-	int GetStartingVertex() { return startingVertex; }
-	virtual List<Edge>* Neighbours(int vertexIndex) {
-		List<Edge>* tmp = new List<Edge>();
-		return tmp;
+	virtual Vertex<int,T>* getStartVertex() { return startVertex; }
+	virtual List<Vertex<int, T>>* vertices() { return listOfVertices; }
+	virtual List<Edge<T>>* edges() { return listOfEdges; }
+	virtual List<Edge<T>>* incidentEdges(Vertex<int, T>* v) { //tylko jako pic
+		List<Edge<T>>* r = new List<Edge<T>>();
+		return r;
 	}
-	virtual int GetEdgeWeigth(int vertex1, int vertex2) { return 0; }
+	virtual Vertex<int, T>* opposite(Vertex<int, T>* v, Edge<T>* e) {//tylko jako pic
+		Vertex<int, T>* r = new Vertex<int,T>();
+		return r;
+	}
 };

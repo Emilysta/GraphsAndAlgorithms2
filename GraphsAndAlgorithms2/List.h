@@ -38,7 +38,7 @@ List<T>::List() {
 
 template <typename T>
 List<T>::~List() {
-	while (!isEmpty()){
+	while (!isEmpty()) {
 		removeFromFront();
 	}
 	delete head;
@@ -51,6 +51,9 @@ T* List<T>::removeFromFront() {
 		head = toRemove->getNext();
 		toRemove->setNext(nullptr);
 		--size2;
+		if (size2 == 0) {
+			tail = nullptr;
+		}
 		return toRemove->getElement();
 	}
 }
@@ -66,7 +69,7 @@ T* List<T>::removeAtIndex(int index) {
 			return removeFromFront();
 		}
 		if (index == size2 - 1) {
-			 return removeFromBack();
+			return removeFromBack();
 		}
 		if (index > 0 && index < size2 - 1) {
 			Element<T>* toRemove = getElemAtIndex(index);
@@ -106,13 +109,13 @@ void List<T>::insertOnFront(T* elem) {
 		newElem->setNext(nullptr);
 		head = newElem;
 		tail = newElem;
-		newElem->getElement()->setPositionInList(getElemAtIndex(0)); //ustawiam pozycje na index 0
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index 0
 	}
 	else {
 		newElem->setNext(head);
 		head->setPrevious(newElem);
 		head = newElem;
-		newElem->getElement()->setPositionInList(getElemAtIndex(0)); //ustawiam pozycje na index 0
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index 0
 	}
 }
 
@@ -133,7 +136,7 @@ void List<T>::insertAfter(int index, T* newElem) {
 			toAdd->setNext(getElemAtIndex(index)->getNext());
 			getElemAtIndex(index)->getNext()->setPrevious(toAdd);
 			getElemAtIndex(index)->setNext(toAdd);
-			toAdd->getElement()->setPositionInList(getElemAtIndex(index + 1)); //usatwiam pozycje elementu w liœcie
+			toAdd->getElement()->setPositionInList(toAdd); //usatwiam pozycje elementu w liœcie
 			++size2;
 		}
 	}
@@ -144,22 +147,22 @@ void List<T>::insertOnBack(T* elem) {
 	++size2;
 	Element<T>* newElem = new Element<T>();
 	newElem->setElement(elem);
-	if (tail == nullptr && head ==nullptr) {
+	if (tail == nullptr && head == nullptr) {
 		head = newElem;
 		tail = newElem;
-		newElem->getElement()->setPositionInList(getElemAtIndex(size2-1)); //ustawiam pozycje na index ostatni
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index ostatni
 	}
 	else {
 		newElem->setPrevious(tail);
 		tail->setNext(newElem);
 		tail = newElem;
-		newElem->getElement()->setPositionInList(getElemAtIndex(size2 - 1)); //ustawiam pozycje na index ostatni
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index ostatni
 	}
 }
 
-void List<List<ExtendedEdge<int>>>::insertOnBack(List<ExtendedEdge<int>>* elem) {
+void List<List<Edge<int>>>::insertOnBack(List<Edge<int>>* elem) {
 	++size2;
-	Element<List<ExtendedEdge<int>>>* newElem = new Element<List<ExtendedEdge<int>>>();
+	Element<List<Edge<int>>>* newElem = new Element<List<Edge<int>>>();
 	newElem->setElement(elem);
 	if (tail == nullptr && head == nullptr) {
 		head = newElem;
@@ -174,18 +177,7 @@ void List<List<ExtendedEdge<int>>>::insertOnBack(List<ExtendedEdge<int>>* elem) 
 
 template <typename T>
 int List<T>::size() {
-	int count = 0;
-	if (isEmpty()) {
-		return count;
-	}
-	else {
-		Element<T>* h = head;
-		while (h != nullptr) {
-			count++;
-			h = h->getNext();
-		}
-	}
-	return count;
+	return size2;
 }
 
 template <typename T>
@@ -197,7 +189,7 @@ void List<T>::showList() {
 	else {
 		for (int i = 0; i < size2; i++) {
 			(h->getElement())->show();
-			std::cout<< " ";
+			std::cout << " ";
 			h = h->getNext();
 		}
 	}
@@ -206,7 +198,10 @@ void List<T>::showList() {
 
 template <typename T>
 bool List<T>::isEmpty() const {
-	return (head == nullptr);
+	if (size2 == 0) {
+		return true;
+	}
+	else { return false; }
 }
 
 template <typename T>
@@ -295,7 +290,7 @@ T* List<T>::findAndDelete(T* elem) {
 	if (!isEmpty()) {
 		int count = 0;
 		Element<T>* tmp = head;
-		Compare<Vertex<int>, int> comp;
+		Compare<Vertex<int, T>, int> comp;
 		do {
 			if (comp(*elem, *(tmp->getElement()))) {
 				if (count == 0) {

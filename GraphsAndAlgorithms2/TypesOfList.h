@@ -9,7 +9,7 @@
  *  -ListV ---- List of Vertices
 
  */
-using ListV = List<Vertex<int>>;
+using ListV = List<Vertex<int,int>>;
 using ListE = List<Edge<int>>;
 
 

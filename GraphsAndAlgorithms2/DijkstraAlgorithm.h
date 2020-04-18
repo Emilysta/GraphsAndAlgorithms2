@@ -1,13 +1,13 @@
 #pragma once
-#include "GraphOnMatrix.h"
+#include "Graph.h"
 #include "PQueue.h"
 #include <chrono>
 template <typename t>
-PQueue <Vertex<int>, t>*  Dijkstra(GraphOnMatrix<t>* graph) {
-	PQueue <Vertex<int>, t>* Q = new PQueue<Vertex<int>, t>();
-	PQueue <Vertex<int>, t>* S = new PQueue<Vertex<int>, t>();
-	Compare <Vertex<int>, t> comp; 
-	int numberV=graph->vertices()->size();
+PQueue <Vertex<int,t>, t>*  Dijkstra(Graph<t>* graph) {
+	PQueue <Vertex<int,t>, t>* Q = new PQueue<Vertex<int,t>, t>();
+	PQueue <Vertex<int,t>, t>* S = new PQueue<Vertex<int,t>, t>();
+	Compare <Vertex<int,t>, t> comp;
+	int numberV = graph->vertices()->size();
 	bool* arr = new bool[numberV];
 	for (int j = 0; j < numberV; j++) {
 		arr[j] = true;
@@ -22,17 +22,18 @@ PQueue <Vertex<int>, t>*  Dijkstra(GraphOnMatrix<t>* graph) {
 		}
 	}
 	while (!Q->isEmpty()) {
-		Qelement<Vertex<int>, t>* elemPQ = new Qelement<Vertex<int>, t>();
+		Qelement<Vertex<int,t>, t>* elemPQ = new Qelement<Vertex<int,t>, t>();
 		elemPQ = Q->removeMin();
 		arr[elemPQ->getData()->getPoint()] = false;
 		S->insert(elemPQ);
 		List<Edge<t>>* incidentEdges = graph->incidentEdges(elemPQ->getData());
+		std::cout << "elo";
 		for (int i = 0; i < incidentEdges->size(); i++) {
-			Vertex<int>* z = graph->opposite(elemPQ->getData(), (*incidentEdges)[i]);
+			Vertex<int,t>* z = graph->opposite(elemPQ->getData(), (*incidentEdges)[i]);
 			t number = elemPQ->getKey() + (*incidentEdges)[i]->getWeight();
 			if (arr[z->getPoint()] != false) {
-				Qelement<Vertex<int>, t>* o = new Qelement<Vertex<int>, t>();
-				o = Q->getHeapOnList()->findAndDelete(new Qelement<Vertex<int>, t>(0, z));
+				Qelement<Vertex<int,t>, t>* o = new Qelement<Vertex<int,t>, t>();
+				o = Q->getHeapOnList()->findAndDelete(new Qelement<Vertex<int,t>, t>(0, z));
 
 				if (number < o->getKey()) {
 					o->setKey(number);
@@ -42,9 +43,9 @@ PQueue <Vertex<int>, t>*  Dijkstra(GraphOnMatrix<t>* graph) {
 			}
 		}
 	}
-	
+
 	auto stop = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-	std::cout << "algorytm: "<< duration.count() << "ms\n";
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	std::cout << "algorytm: " << duration.count() << "ms\n";
 	return S;
 }

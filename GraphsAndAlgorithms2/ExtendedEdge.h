@@ -5,42 +5,38 @@ class List;
 template <typename T>
 class Element;
 template <typename t>
-class ExtendedEdge
+class ExtendedEdge: public Edge<t>
 {
-	t weight;
-	Element<ExtendedEdge<t>>* whereInList;
-	ExtendedVertex<int,t>* startOfEdge;
-	ExtendedVertex<int,t>* endOfEdge;
 	List<ExtendedEdge<t>>* incidentToStart;
 	List<ExtendedEdge<t>>* incidentToEnd;
 
 public:
 	ExtendedEdge() {
-		whereInList = nullptr;
-		weight = -100;
-		startOfEdge = nullptr;
-		endOfEdge = nullptr;
+		this->whereInList = nullptr;
+		this->weight = -100;
+		this->startOfEdge = nullptr;
+		this->endOfEdge = nullptr;
 		incidentToStart = new List<ExtendedEdge<t>>();
 		incidentToEnd = new List<ExtendedEdge<t>>();
 	}
 	~ExtendedEdge() {
-		whereInList = nullptr;
-		startOfEdge = nullptr;
-		endOfEdge = nullptr;
+		this->whereInList = nullptr;
+		this->startOfEdge = nullptr;
+		this->endOfEdge = nullptr;
 		incidentToStart = nullptr;
 		incidentToEnd = nullptr;
 	}
-	ExtendedEdge(t newWeight, Element<ExtendedEdge<t>>* newWhere, ExtendedVertex<int,t>* newStart, ExtendedVertex<int,t>* newEnd) {
-		weight = newWeight;
-		whereInList = newWhere;
-		startOfEdge = newStart;
-		endOfEdge = newEnd;
+	ExtendedEdge(t newWeight, Element<Edge<t>>* newWhere, Vertex<int,t>* newStart, Vertex<int,t>* newEnd) {
+		this->weight = newWeight;
+		this->whereInList = newWhere;
+		this->startOfEdge = dynamic_cast<ExtendedVertex<int, t>*>(newStart);
+		this->endOfEdge = dynamic_cast<ExtendedVertex<int, t>*>(newEnd);
 		incidentToStart = new List<ExtendedEdge<t>>();
 		incidentToEnd = new List<ExtendedEdge<t>>();
 
 	}
 	const t& getWeight() const;
-	Element<ExtendedEdge<t>>* getPositionInList() const;
+	Element<Edge<t>>* getPositionInList() const;
 	ExtendedVertex<int, t>* getStartOfEdge() const;
 	ExtendedVertex<int, t>* getEndOfEdge() const;
 	void setWeight(t newWeight);
@@ -57,55 +53,55 @@ public:
 
 template <typename t>
 const t& ExtendedEdge<t>::getWeight() const {
-	return weight;
+	return this->weight;
 }
 
 template <typename t>
-Element<ExtendedEdge<t>>* ExtendedEdge<t>::getPositionInList() const {
-	return whereInList;
+Element<Edge<t>>* ExtendedEdge<t>::getPositionInList() const {
+	return this->whereInList;
 }
 
 template <typename t>
 ExtendedVertex<int, t>* ExtendedEdge<t>::getStartOfEdge() const {
-	return startOfEdge;
+	return dynamic_cast<ExtendedVertex<int, t>*>(this->startOfEdge);
 }
 
 template <typename t>
 ExtendedVertex<int, t>* ExtendedEdge<t>::getEndOfEdge() const {
-	return endOfEdge;
+	return dynamic_cast<ExtendedVertex<int, t>*>(this->endOfEdge);
 }
 
 template <typename t>
 void ExtendedEdge<t>::setWeight(t newWeight) {
-	weight = newWeight;
+	this->weight = newWeight;
 }
 
 template <typename t>
 void ExtendedEdge<t>::setPositionInList(Element<ExtendedEdge<t>>* newMyself) {
-	whereInList = newMyself;
+	this->whereInList = newMyself;
 }
 
 template <typename t>
 void ExtendedEdge<t>::show() {
-	startOfEdge->show();
+	this->startOfEdge->show();
 	std::cout << "\t";
-	endOfEdge->show();
+	this->endOfEdge->show();
 	std::cout << "\t";
-	std::cout << weight << "\n";
+	std::cout << this->weight << "\n";
 }
 
 template <typename t>
 void ExtendedEdge<t>::toShow() {
-	startOfEdge->show();
+	this->startOfEdge->show();
 	std::cout << ".";
-	endOfEdge->show();
+	this->endOfEdge->show();
 	std::cout << ".";
-	std::cout << weight;
+	std::cout << this->weight;
 }
 template <typename t>
 bool ExtendedEdge<t>::isTheSame(ExtendedEdge<t> _edge) {
 
-	if (weight == _edge.getWeight() && startOfEdge == _edge->getStartOfEdge() && endOfEdge == _edge->getEndOfEdge()) {
+	if (this->weight == _edge.getWeight() && this->startOfEdge == _edge->getStartOfEdge() && this->endOfEdge == _edge->getEndOfEdge()) {
 		return true;
 	}
 	return false;

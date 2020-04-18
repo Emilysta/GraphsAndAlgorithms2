@@ -1,11 +1,12 @@
 #pragma once
 template <typename T>
 class Element;
-template <typename t>
+template <typename t,typename T>
 class Vertex
 {
+protected:
 	t point;
-	Element<Vertex<t>>* whereInList;
+	Element<Vertex<t,T>>* whereInList;
 public:
 	Vertex() {
 		whereInList = nullptr;
@@ -18,41 +19,41 @@ public:
 		point = newPoint;
 		whereInList = nullptr;
 	}
-	const t& getPoint() const;
-	const Element<Vertex<t>>* getPositionInList() const;
-	void setPoint(t newPoint);
-	void setPositionInList(Element<Vertex<t>>* newMyself);
-	void show();
-	bool isTheSame(Vertex<t> _vertex);
+	virtual const t& getPoint() const;
+	virtual const Element<Vertex<t,T>>* getPositionInList() const;
+	virtual void setPoint(t newPoint);
+	virtual void setPositionInList(Element<Vertex<t,T>>* newMyself);
+	virtual void show();
+	virtual bool isTheSame(Vertex<t,T> _vertex);
 };
 
-template <typename t>
-const t& Vertex<t>::getPoint() const {
+template <typename t, typename T>
+const t& Vertex<t,T>::getPoint() const {
 	return point;
 }
 
-template <typename t>
-const Element<Vertex<t>>* Vertex<t>::getPositionInList() const{
+template <typename t, typename T>
+const Element<Vertex<t,T>>* Vertex<t,T>::getPositionInList() const{
 	return whereInList;
 }
 
-template <typename t>
-void Vertex<t>::setPoint(t newPoint) {
+template <typename t, typename T>
+void Vertex<t,T>::setPoint(t newPoint) {
 	point = newPoint;
 }
 
-template <typename t>
-void Vertex<t>::setPositionInList(Element<Vertex<t>>* newMyself) {
+template <typename t, typename T>
+void Vertex<t,T>::setPositionInList(Element<Vertex<t,T>>* newMyself) {
 	whereInList = newMyself;
 }
 
-template <typename t>
-void Vertex<t>::show() {
+template <typename t, typename T>
+void Vertex<t,T>::show() {
 	std::cout << point;
 }
 
-template <typename t>
-bool Vertex<t>::isTheSame(Vertex<t> _vertex) {
+template <typename t, typename T>
+bool Vertex<t,T>::isTheSame(Vertex<t,T> _vertex) {
 
 	if (point == _vertex.getPoint()) {
 		return true;
