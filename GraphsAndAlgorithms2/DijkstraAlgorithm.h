@@ -4,46 +4,6 @@
 #include <chrono>
 template <typename t>
 PQueue <Vertex<int>, t>*  Dijkstra(GraphOnMatrix<t>* graph) {
-	//PQueue <Vertex<int>, t>* Q = new PQueue<Vertex<int>, t>();
-	//PQueue <Vertex<int>, t>* S = new PQueue<Vertex<int>, t>();
-	//Compare <Vertex<int>, t> comp;
-	//auto start = std::chrono::high_resolution_clock::now();
-	//int numberOFVertices = graph->vertices()->size()
-	//for (int i = 0; i < numberOFVertices; i++) {
-	//	if (*(graph->getStartVertex())->getPoint() == i ){
-	//		Q->insert(0, new Vertex<int>(i));
-	//	}
-	//	else {
-	//		Q->insert(100000, new Vertex<int>(i));
-	//	}
-	//}
-	//bool tab[numberOFVertices];
-	//for (int j = 0; j < numberOFVertices; j++) {
-	//	tab[j] = true;
-	//}
-	//while (!Q->isEmpty()) {
-	//	//Q->show();
-	//	//std::cout << "KONIEC KOLEJKI" << std::endl;
-	//	Qelement<Vertex<int>,t>* elemPQ = new Qelement<Vertex<int>,t>();
-	//	elemPQ = Q->removeMin();
-	//	Vertex<int>* v = elemPQ->getData();
-	//	tab[v->getPoint()] = false;
-	//	S->insert(elemPQ);
-	//	List<Edge<t>>* incidentEdges = graph->incidentEdges(elemPQ->getData());
-	//	for (int i = 0; i < incidentEdges->size(); i++) {
-	//		Edge<t>* e = (*incidentEdges)[i];
-	//		Vertex<int>* z = graph->opposite(v,e);
-	//		t number = elemPQ->getKey() + e->getWeight();
-	//		Qelement<Vertex<int>, t>* o = new Qelement<Vertex<int>, t>();
-	//		o = Q->getHeapOnList()->findElem(new Qelement<Vertex<int>, t>(0, z));
-	//		if (tab[z->getPositionInList()==true) {
-	//			if (number < o->getKey()) {
-	//				Q->replaceKey(z, number, elemPQ->getData()->getPoint());
-	//			}
-	//		}
-	//	}
-	//	Q->repair();
-	//}
 	PQueue <Vertex<int>, t>* Q = new PQueue<Vertex<int>, t>();
 	PQueue <Vertex<int>, t>* S = new PQueue<Vertex<int>, t>();
 	Compare <Vertex<int>, t> comp; 
@@ -77,7 +37,6 @@ PQueue <Vertex<int>, t>*  Dijkstra(GraphOnMatrix<t>* graph) {
 				if (number < o->getKey()) {
 					o->setKey(number);
 					o->setPrev(elemPQ->getData()->getPoint());
-					//Q->insert(o);
 				}
 				Q->insert(o);
 			}
