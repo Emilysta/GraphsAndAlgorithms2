@@ -27,7 +27,6 @@ PQueue <Vertex<int,t>, t>*  Dijkstra(Graph<t>* graph) {
 		arr[elemPQ->getData()->getPoint()] = false;
 		S->insert(elemPQ);
 		List<Edge<t>>* incidentEdges = graph->incidentEdges(elemPQ->getData());
-		std::cout << "elo";
 		for (int i = 0; i < incidentEdges->size(); i++) {
 			Vertex<int,t>* z = graph->opposite(elemPQ->getData(), (*incidentEdges)[i]);
 			t number = elemPQ->getKey() + (*incidentEdges)[i]->getWeight();
@@ -46,6 +45,6 @@ PQueue <Vertex<int,t>, t>*  Dijkstra(Graph<t>* graph) {
 
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	std::cout << "algorytm: " << duration.count() << "ms\n";
+	std::cout << "algorytm: " << duration.count() << "micros\n";
 	return S;
 }

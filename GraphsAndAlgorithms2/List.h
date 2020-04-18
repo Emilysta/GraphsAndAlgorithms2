@@ -38,7 +38,7 @@ List<T>::List() {
 
 template <typename T>
 List<T>::~List() {
-	while (!isEmpty()) {
+	while (size2 !=0) {
 		removeFromFront();
 	}
 	delete head;
@@ -75,8 +75,6 @@ T* List<T>::removeAtIndex(int index) {
 			Element<T>* toRemove = getElemAtIndex(index);
 			(toRemove->getPrevious())->setNext(toRemove->getNext());
 			(toRemove->getNext())->setPrevious(toRemove->getPrevious());
-			//toRemove->setNext(nullptr);
-			//toRemove->setPrevious(nullptr);
 			--size2;
 			return toRemove->getElement();
 		}
@@ -244,28 +242,23 @@ Element<T>* List<T>::getElemAtIndex(int index) const {
 
 template <typename T>
 T* List<T>::operator [](int toSearch) const {
-
-	Element<T>* tmp = head;
 	if (toSearch >= size2) {
 		std::cout << "Wykroczono poza zakres";
 		return nullptr;
 	}
-	for (int i = 0; i < toSearch; i++)
-		tmp = tmp->getNext();
+	Element<T>* tmp = head;
+	if (toSearch < size2 / 2)
+	{
+		for (int i = 0; i < toSearch; i++)
+			tmp = tmp->getNext();
+	}
+	else {
+		Element<T>* tmp = tail;
+		for (int i = size2-1; i > toSearch; i--)
+			tmp = tmp->getPrevious();
+	}
 	return tmp->getElement();
 }
-//	do {
-//		if (count==toSearch){
-//			return tmp->getElement();
-//		}
-//		else {
-//			count++;
-//			tmp = tmp->getNext();
-//		}
-//	} while (tmp != nullptr);
-//
-//	return nullptr;
-//}
 
 template <typename T>
 T* List<T>::findElem(T* elem) const {

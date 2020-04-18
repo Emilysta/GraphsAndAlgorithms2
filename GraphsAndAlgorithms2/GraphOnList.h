@@ -45,9 +45,7 @@ GraphOnList<T>::~GraphOnList() {
 	
 	for (int i = 0; i < this->listOfVertices->size(); i++)
 		dynamic_cast<ExtendedVertex<int,T>*>((*this->listOfVertices)[0])->setIncidentEdges(nullptr);
-	for (int i = 0; i < aList->size(); i++) {
-		delete (*aList)[i];// = nullptr;
-	}
+	delete this->aList;
 	delete this->listOfEdges;
 	delete this->listOfVertices;
 }

@@ -38,11 +38,11 @@ void testListOfVertices() {
 	delete list;
 }
 void graphTest() {
-	std::string name = "E:\\Code\\Pliki\\c10d25x39.txt"; //\\GraphsAndAlgorithms2\\test.txt";//
+	std::string name = "E:\\Code\\Pliki\\c1000d100x39.txt"; //\\GraphsAndAlgorithms2\\test.txt";//
 	std::cout << name << std::endl;
-	GraphOnMatrix<int>* graph = new GraphOnMatrix<int>();
-	graph->fillGraph(name);
-	graph->show();
+	//GraphOnMatrix<int>* graph = new GraphOnMatrix<int>();
+	//graph->fillGraph(name);
+	//graph->show();
 	GraphOnList<int>* graph2 = new GraphOnList<int>();
 	graph2->fillGraph(name);
 	graph2->show();
@@ -81,19 +81,19 @@ void graphTest() {
 	//graph->replaceV(new Vertex<int>(0), 7);
 	//graph->replaceE(new Edge<int>(4, nullptr, new Vertex<int>(7), new Vertex<int>(1)), 5);
 	//graph->show();
-	PQueue<Vertex<int,int>, int>* queue = Dijkstra(graph);
-	std::cout << "Dlugosc najkrotszych sciezek dla wierzcholkkow: \n";
-	std::cout << "w K . dlug . w p \n";
-	queue->showWithVertex();
+	//PQueue<Vertex<int,int>, int>* queue = Dijkstra(graph);
+	//std::cout << "Dlugosc najkrotszych sciezek dla wierzcholkkow: \n";
+	//std::cout << "w K . dlug . w p \n";
+	//->showWithVertex();
 
 	PQueue<Vertex<int,int>, int>* queue2 = Dijkstra(graph2);
 	std::cout << "Dlugosc najkrotszych sciezek dla wierzcholkkow: \n";
-	std::cout << "w K . dlug . w p \n";
-	queue2->showWithVertex();
+	//std::cout << "w K . dlug . w p \n";
+	//queue2->showWithVertex();
 	//graph->replaceV((*graph->vertices())[3], 4);
 	//graph->replaceE((*graph->edges())[0], 8);
 	//graph->show();
-	delete graph;
+	//delete graph;
 	delete graph2;
 }
 void priorityQueueTest() {
