@@ -246,14 +246,15 @@ T* List<T>::operator [](int toSearch) const {
 		std::cout << "Wykroczono poza zakres";
 		return nullptr;
 	}
-	Element<T>* tmp = head;
+	Element<T>* tmp = new Element<T>();;
 	if (toSearch < size2 / 2)
 	{
+		tmp = head;
 		for (int i = 0; i < toSearch; i++)
 			tmp = tmp->getNext();
 	}
 	else {
-		Element<T>* tmp = tail;
+		tmp = tail;
 		for (int i = size2-1; i > toSearch; i--)
 			tmp = tmp->getPrevious();
 	}

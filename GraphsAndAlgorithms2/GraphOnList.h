@@ -73,10 +73,8 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 			this->listOfVertices->insertOnBack(v);
 		}
 		this->startVertex = (*this->listOfVertices)[start];
-		int i = 0;
 		while (file>>row)
 		{
-			i++;
 			file >> column >> weight;
 			Edge<T>* edge = 
 				new Edge<T>(weight, nullptr, dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[row]), dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[column])); //nullptr bo narazie nie znamy miejsca w liscie 
@@ -84,7 +82,6 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 			(*aList)[row]->insertOnBack(edge);
 			(*aList)[column]->insertOnBack(edge);	
 		}
-		std::cout <<"Liczba"<< i<<std::endl;
 	}
 	else {
 		std::cout << "Plik nie jest poprawny!";
