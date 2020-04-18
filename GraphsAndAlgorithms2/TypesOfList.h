@@ -1,6 +1,7 @@
 #pragma once
 #include "List.h"
 #include "Edge.h"
+#include "ExtendedVertex.h"
 /*****************************************************************/
 /*!
  * \file TypesOfList.hh
@@ -10,6 +11,7 @@
  */
 using ListV = List<Vertex<int>>;
 using ListE = List<Edge<int>>;
+
 
 
 

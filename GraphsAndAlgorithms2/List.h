@@ -2,6 +2,8 @@
 #include "Element.h"
 #include "Compare.h"
 template <typename T>
+class ExtendedEdge;
+template <typename T>
 class List {
 	Element<T>* head; //Element<T> to "opakowanie" 
 	Element<T>* tail;
@@ -152,6 +154,21 @@ void List<T>::insertOnBack(T* elem) {
 		tail->setNext(newElem);
 		tail = newElem;
 		newElem->getElement()->setPositionInList(getElemAtIndex(size2 - 1)); //ustawiam pozycje na index ostatni
+	}
+}
+
+void List<List<ExtendedEdge<int>>>::insertOnBack(List<ExtendedEdge<int>>* elem) {
+	++size2;
+	Element<List<ExtendedEdge<int>>>* newElem = new Element<List<ExtendedEdge<int>>>();
+	newElem->setElement(elem);
+	if (tail == nullptr && head == nullptr) {
+		head = newElem;
+		tail = newElem;
+	}
+	else {
+		newElem->setPrevious(tail);
+		tail->setNext(newElem);
+		tail = newElem;
 	}
 }
 

@@ -67,14 +67,12 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 			listOfVertices->insertOnBack(new Vertex<int>(i)); //no i trzeba te wskazniki na sameg siebie!!!!
 		}
 		startVertex = (*listOfVertices)[start];
-		while (!file.eof())
+		while (file>>row)
 		{
-			file >> row >> column >> weight;
+			file >> column >> weight;
 			Edge<T>* edge = new Edge<T>(weight,nullptr,(*listOfVertices)[row],(*listOfVertices)[column]); //nullptr bo narzei nie znam miejsca w liscie 
 			listOfEdges->insertOnBack(edge); // w œrodku funkjci ustawia sie wskaznik na miejsce w liscie
 			aMatrix->setElement(row, column, edge);
-			//edge = new Edge<T>(weight, nullptr, (*listOfVertices)[column], (*listOfVertices)[row]);
-			//listOfEdges->insertOnBack(edge);
 			aMatrix->setElement(column, row, edge);
 		}
 	}
@@ -93,8 +91,8 @@ void GraphOnMatrix<T>::show() {
 	std::cout << listOfVertices->size();
 	std::cout << std::endl;
 	std::cout << "Wierzcholek startowy: " << startVertex->getPoint() << std::endl;
-	this->showVertices();
-	aMatrix->show();
+	//this->showVertices();
+	//aMatrix->show();
 }
 
 template <typename T>

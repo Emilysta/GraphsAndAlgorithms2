@@ -128,7 +128,10 @@
     <ClInclude Include="DijkstraAlgorithm.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Element.h" />
+    <ClInclude Include="ExtendedEdge.h" />
+    <ClInclude Include="ExtendedVertex.h" />
     <ClInclude Include="GenerateGraphs.h" />
+    <ClInclude Include="GraphOnList.h" />
     <ClInclude Include="GraphOnMatrix.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="PQueue.h" />
