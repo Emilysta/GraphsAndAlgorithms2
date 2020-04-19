@@ -20,8 +20,6 @@ public:
 		next = nullptr;
 		delete prev;
 		delete next;
-		//delete prev;
-		//delete next; //??? co jest grane tego nie wiem, przy zakomentowanym delete dziala wszystko
 		delete element;
 	}
 	T* getElement() const;

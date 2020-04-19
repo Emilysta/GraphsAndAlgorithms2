@@ -3,7 +3,7 @@
 #include "PQueue.h"
 #include <chrono>
 template <typename t>
-PQueue <Vertex<int, t>, t> * Dijkstra(Graph<t> * graph) {
+PQueue <Vertex<int, t>, t> * Dijkstra(Graph<t> * graph,double& time) {
 	PQueue <Vertex<int, t>, t>* Q = new PQueue<Vertex<int, t>, t>();
 	PQueue <Vertex<int, t>, t>* S = new PQueue<Vertex<int, t>, t>();
 	Compare <Vertex<int, t>, t> comp;
@@ -46,7 +46,7 @@ PQueue <Vertex<int, t>, t> * Dijkstra(Graph<t> * graph) {
 
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	std::cout << "algorytm: " << duration.count() << "ms\n";
+	time=duration.count();
 	return S;
 }
 

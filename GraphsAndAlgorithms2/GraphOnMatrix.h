@@ -69,10 +69,7 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 		file >> numberOfEdges >> numberOfVertices >> start;
 		aMatrix = new Matrix<Edge<T>*>(numberOfVertices);
 		for (int i = 0; i < numberOfVertices; i++) {
-			Vertex <int, T>* v = new Vertex<int, T>(i);
-			this->listOfVertices->insertOnBack(v); 
-			v = nullptr;
-			delete v;
+			this->listOfVertices->insertOnBack(new Vertex<int, T>(i));
 		}
 		this->startVertex = (*this->listOfVertices)[start];
 		while (file>>row)

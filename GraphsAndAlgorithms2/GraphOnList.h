@@ -42,12 +42,11 @@ GraphOnList<T>::GraphOnList() {
 
 template < typename T >
 GraphOnList<T>::~GraphOnList() {
-	
 	for (int i = 0; i < this->listOfVertices->size(); i++)
-		dynamic_cast<ExtendedVertex<int,T>*>((*this->listOfVertices)[0])->setIncidentEdges(nullptr);
+		dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[0])->setIncidentEdges(nullptr);
 	for (int i = 0; i < this->listOfVertices->size(); i++) {
 		(*aList)[i]->setNullptr();
-		// delete (*aList)[i];
+		//delete (*aList)[i];
 	}
 	delete aList;
 	delete this->listOfEdges;
@@ -78,8 +77,6 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 			ExtendedVertex<int, T>* v = new ExtendedVertex<int, T>(i);
 			v->setIncidentEdges((*aList)[i]);
 			this->listOfVertices->insertOnBack(v);
-			v = nullptr;
-			delete v;
 		}
 		this->startVertex = (*this->listOfVertices)[start];
 		while (file>>row)

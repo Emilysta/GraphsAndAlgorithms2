@@ -4,6 +4,7 @@
 #include "GenerateGraphs.h"
 #include "PQueue.h"
 #include "DijkstraAlgorithm.h"
+#include "Times.h"
 
 
 void testListOfVertices() {
@@ -82,8 +83,8 @@ void graphTest() {
 	//graph->replaceE(new Edge<int>(4, nullptr, new Vertex<int>(7), new Vertex<int>(1)), 5);
 	//graph->show();
 	//PQueue<Vertex<int,int>, int>* queue = Dijkstra(graph);
-
-	//PQueue<Vertex<int,int>, int>* queue2 = Dijkstra(graph2);
+	//double time=0;
+	//PQueue<Vertex<int,int>, int>* queue2 = Dijkstra(graph2,time);
 	//queue2->showWithVertex();
 	//std::cout << "Dlugosc najkrotszych sciezek dla wierzcholkkow: \n";
 	//std::cout << "w K . dlug . w p \n";
@@ -129,8 +130,9 @@ void priorityQueueTest() {
 
 int main() {
 	//testListOfVertices();
-	graphTest();
+	//graphTest();
 	//priorityQueueTest();
+	timesTest();
 	std::cout << "elo";
 	std::cout << "2";
 	std::cout << "2";
