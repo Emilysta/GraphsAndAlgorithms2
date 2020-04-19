@@ -20,8 +20,11 @@ public:
 	}
 	~Edge() {
 		whereInList = nullptr;
+		delete whereInList;
 		startOfEdge = nullptr;
+		delete startOfEdge;
 		endOfEdge = nullptr;
+		delete endOfEdge;
 	}
 	Edge(t newWeight, Element<Edge<t>>* newWhere, Vertex<int,t>* newStart,Vertex<int,t>* newEnd) {
 		weight = newWeight;

@@ -12,6 +12,7 @@ public:
 	List();
 	~List();
 	T* removeFromFront();
+	Element<T>* remove();
 	T* removeAtIndex(int index);
 	T* removeFromBack();
 	void insertOnFront(T* elem);
@@ -27,6 +28,7 @@ public:
 	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
 	T* findElem(T* elem) const;
 	T* findAndDelete(T* elem);
+	void setNullptr();
 };
 
 template <typename T>
@@ -39,7 +41,7 @@ List<T>::List() {
 template <typename T>
 List<T>::~List() {
 	while (size2 !=0) {
-		removeFromFront();
+		delete remove();
 	}
 	delete head;
 }
@@ -55,6 +57,19 @@ T* List<T>::removeFromFront() {
 			tail = nullptr;
 		}
 		return toRemove->getElement();
+	}
+}
+template <typename T>
+Element<T>* List<T>::remove() {
+	if (size2 != 0) {
+		Element<T>* toRemove = head;
+		head = toRemove->getNext();
+		toRemove->setNext(nullptr);
+		--size2;
+		if (size2 == 0) {
+			tail = nullptr;
+		}
+		return toRemove;
 	}
 }
 
@@ -115,6 +130,8 @@ void List<T>::insertOnFront(T* elem) {
 		head = newElem;
 		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index 0
 	}
+	newElem = nullptr;
+	delete newElem;
 }
 
 template <typename T>
@@ -136,6 +153,7 @@ void List<T>::insertAfter(int index, T* newElem) {
 			getElemAtIndex(index)->setNext(toAdd);
 			toAdd->getElement()->setPositionInList(toAdd); //usatwiam pozycje elementu w liœcie
 			++size2;
+			//toAdd = nullptr
 		}
 	}
 }
@@ -156,6 +174,8 @@ void List<T>::insertOnBack(T* elem) {
 		tail = newElem;
 		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index ostatni
 	}
+	newElem = nullptr;
+	delete newElem;
 }
 
 void List<List<Edge<int>>>::insertOnBack(List<Edge<int>>* elem) {
@@ -171,6 +191,8 @@ void List<List<Edge<int>>>::insertOnBack(List<Edge<int>>* elem) {
 		tail->setNext(newElem);
 		tail = newElem;
 	}
+	newElem = nullptr;
+	delete newElem;
 }
 
 template <typename T>
@@ -246,19 +268,19 @@ T* List<T>::operator [](int toSearch) const {
 		std::cout << "Wykroczono poza zakres";
 		return nullptr;
 	}
-	Element<T>* tmp = new Element<T>();;
 	if (toSearch < size2 / 2)
 	{
-		tmp = head;
+		Element<T>* tmp = head;
 		for (int i = 0; i < toSearch; i++)
 			tmp = tmp->getNext();
+		return tmp->getElement();
 	}
 	else {
-		tmp = tail;
+		Element<T>* tmp = tail;
 		for (int i = size2-1; i > toSearch; i--)
 			tmp = tmp->getPrevious();
+		return tmp->getElement();
 	}
-	return tmp->getElement();
 }
 
 template <typename T>
@@ -307,4 +329,19 @@ T* List<T>::findAndDelete(T* elem) {
 		} while (tmp != nullptr);
 	}
 	return nullptr;
+}
+
+
+template <typename T>
+void List<T>::setNullptr() {
+	Element<T>* h = head;
+	if (isEmpty()) {
+		std::cout << "Lista pusta\n";
+	}
+	else {
+		for (int i = 0; i < size2; i++) {
+			(h->setElement(nullptr));
+			h = h->getNext();
+		}
+	}
 }

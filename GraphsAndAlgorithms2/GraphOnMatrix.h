@@ -34,13 +34,21 @@ template < typename T >
 GraphOnMatrix<T>::GraphOnMatrix() {
 	this->listOfEdges = new List<Edge<T>>();
 	this->listOfVertices = new List<Vertex<int,T>>();
-	aMatrix = new Matrix<Edge<T>*>();
+	aMatrix = nullptr;//new Matrix<Edge<T>*>();
 	this->startVertex = 0;
 }
 
 template < typename T >
 GraphOnMatrix<T>::~GraphOnMatrix() {
 	aMatrix->setNullptr();
+	for (int i = 0; i < this->listOfVertices->size(); i++) {
+		for (int j = 0; j < this->listOfVertices->size(); j++) {
+			Edge<T>* e= aMatrix->getElement(i, j);
+			aMatrix->setElement(i, j, nullptr);
+			delete e;
+		}
+	}
+	delete aMatrix;
 	delete this->listOfEdges;
 	delete this->listOfVertices;
 }
@@ -61,7 +69,10 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 		file >> numberOfEdges >> numberOfVertices >> start;
 		aMatrix = new Matrix<Edge<T>*>(numberOfVertices);
 		for (int i = 0; i < numberOfVertices; i++) {
-			this->listOfVertices->insertOnBack(new Vertex<int,T>(i)); //no i trzeba te wskazniki na sameg siebie!!!!
+			Vertex <int, T>* v = new Vertex<int, T>(i);
+			this->listOfVertices->insertOnBack(v); 
+			v = nullptr;
+			delete v;
 		}
 		this->startVertex = (*this->listOfVertices)[start];
 		while (file>>row)
@@ -71,6 +82,8 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 			this->listOfEdges->insertOnBack(edge); // w œrodku funkjci ustawia sie wskaznik na miejsce w liscie
 			aMatrix->setElement(row, column, edge);
 			aMatrix->setElement(column, row, edge);
+			edge = nullptr;
+			delete edge;
 		}
 	}
 	else {

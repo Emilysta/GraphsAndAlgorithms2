@@ -45,7 +45,11 @@ GraphOnList<T>::~GraphOnList() {
 	
 	for (int i = 0; i < this->listOfVertices->size(); i++)
 		dynamic_cast<ExtendedVertex<int,T>*>((*this->listOfVertices)[0])->setIncidentEdges(nullptr);
-	delete this->aList;
+	for (int i = 0; i < this->listOfVertices->size(); i++) {
+		(*aList)[i]->setNullptr();
+		// delete (*aList)[i];
+	}
+	delete aList;
 	delete this->listOfEdges;
 	delete this->listOfVertices;
 }
@@ -65,12 +69,17 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 	if (file.good()) {
 		file >> numberOfEdges >> numberOfVertices >> start;
 		for (int i = 0; i < numberOfVertices; i++) {
-			aList->insertOnBack(new List<Edge<T>>());
+			List<Edge<T>>* l = new List<Edge<T>>();
+			aList->insertOnBack(l);
+			l = nullptr;
+			delete l;
 		}
 		for (int i = 0; i < numberOfVertices; i++) {
 			ExtendedVertex<int, T>* v = new ExtendedVertex<int, T>(i);
 			v->setIncidentEdges((*aList)[i]);
 			this->listOfVertices->insertOnBack(v);
+			v = nullptr;
+			delete v;
 		}
 		this->startVertex = (*this->listOfVertices)[start];
 		while (file>>row)
@@ -80,7 +89,9 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 				new Edge<T>(weight, nullptr, dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[row]), dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[column])); //nullptr bo narazie nie znamy miejsca w liscie 
 			this->listOfEdges->insertOnBack(edge); // w œrodku funkcji ustawia sie wskaznik na miejsce w liscie
 			(*aList)[row]->insertOnBack(edge);
-			(*aList)[column]->insertOnBack(edge);	
+			(*aList)[column]->insertOnBack(edge);
+			edge = nullptr;
+			delete edge;
 		}
 	}
 	else {

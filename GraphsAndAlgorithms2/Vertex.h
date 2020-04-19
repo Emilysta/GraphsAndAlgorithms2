@@ -14,6 +14,7 @@ public:
 	}
 	~Vertex() {
 		whereInList = nullptr;
+		delete whereInList;
 	}
 	Vertex(t newPoint) {
 		point = newPoint;

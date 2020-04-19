@@ -20,6 +20,8 @@ public:
 	~ExtendedVertex() {
 		this->whereInList = nullptr;
 		incidentEdges = nullptr;
+		delete incidentEdges;
+		delete this->whereInList;
 	}
 	ExtendedVertex(t newPoint) {
 		this->point = newPoint;
