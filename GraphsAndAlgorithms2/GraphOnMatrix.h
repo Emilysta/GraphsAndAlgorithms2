@@ -183,7 +183,7 @@ template <typename T>
 List<Edge<T>>* GraphOnMatrix<T>::incidentEdges(Vertex<int,T>* v) {
 	List<Edge<T>>* list = new List<Edge<T>>();
 	for (int i = 0; i < this->listOfVertices->size(); i++) {
-		if (aMatrix->getElement(v->getPoint(),i) != nullptr)
+		if (aMatrix->getElement(v->getPoint(), i) != nullptr)
 			list->insertOnBack(aMatrix->getElement(v->getPoint(), i));
 	}
 	return list;

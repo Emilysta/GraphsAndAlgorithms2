@@ -26,7 +26,7 @@ public:
 	ExtendedVertex(t newPoint) {
 		this->point = newPoint;
 		this->whereInList = nullptr;
-		incidentEdges = new List<Edge<T>>();
+		incidentEdges = nullptr;//new List<Edge<T>>();
 	}
 	const t& getPoint() const;
 	const Element<Vertex<t,T>>* getPositionInList() const;

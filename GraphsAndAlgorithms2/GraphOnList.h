@@ -174,7 +174,11 @@ bool GraphOnList<T>::removeEdge(Edge<T>* e) {//usuwa krawedz z istniejacych
 //do sprawdzenia
 template <typename T>
 List<Edge<T>>* GraphOnList<T>::incidentEdges(Vertex<int,T>* v) {
-	return (*aList)[v->getPoint()];
+	List<Edge<T>>* tmp = new List<Edge<T>>();
+	for (int i = 0; i < (*aList)[v->getPoint()]->size(); i++) {
+		tmp->insertOnBack( (*(*aList)[v->getPoint()])[i] );
+	}
+	return tmp;
 }
 //do sprawdzenia
 template <typename T>

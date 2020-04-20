@@ -34,9 +34,9 @@ void timesTest() {
 			double timeList = 0;
 			double time = 0;
 			for (int j = 0; j < countOfInstances; j++) { //wczytanie do tablic 100 instancji danego typu
-				Dijkstra(&arrayMatrix[j], time);
+				Dijkstra(&arrayMatrix[j], time,false);
 				timeMatrix += time;
-				Dijkstra(&arrayList[j], time);
+				Dijkstra(&arrayList[j], time,false);
 				timeList += time;
 			}
 			file << countOfVertices[i / 4] << ";" << density[i % 4] << ";" << timeMatrix << ";" << timeList << "\n";

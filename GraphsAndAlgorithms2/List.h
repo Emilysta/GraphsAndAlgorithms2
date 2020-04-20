@@ -27,7 +27,7 @@ public:
 	Element<T>* getElemAtIndex(int index) const; //zwraca "opakowanie" o indeksie
 	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
 	T* findElem(T* elem) const;
-	T* findAndDelete(T* elem);
+	T* findAndDelete(T elem);
 	void setNullptr();
 };
 
@@ -174,8 +174,6 @@ void List<T>::insertOnBack(T* elem) {
 		tail = newElem;
 		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index ostatni
 	}
-	newElem = nullptr;
-	delete newElem;
 }
 
 void List<List<Edge<int>>>::insertOnBack(List<Edge<int>>* elem) {
@@ -226,9 +224,9 @@ bool List<T>::isEmpty() const {
 
 template <typename T>
 void List<T>::swap(T* elem1, T* elem2) {
-	T tmp = *(elem1);
-	*elem1 = *elem2;
-	*elem2 = tmp;
+	T* tmp = elem1;
+	elem1 = elem2;
+	elem2 = tmp;
 }
 
 template <typename T>
@@ -302,13 +300,13 @@ T* List<T>::findElem(T* elem) const {
 
 
 template <typename T>
-T* List<T>::findAndDelete(T* elem) {
+T* List<T>::findAndDelete(T elem) {
 	if (!isEmpty()) {
 		int count = 0;
 		Element<T>* tmp = head;
 		Compare<Vertex<int, T>, int> comp;
 		do {
-			if (comp(*elem, *(tmp->getElement()))) {
+			if (comp(elem, *(tmp->getElement()))) {
 				if (count == 0) {
 					return removeFromFront();
 				}

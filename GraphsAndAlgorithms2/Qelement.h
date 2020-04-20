@@ -19,7 +19,11 @@ public:
 		whereInList = nullptr;
 	}
 
-	~Qelement() = default;
+	~Qelement() {
+		whereInList = nullptr;
+		//delete whereInList;
+		data = nullptr;
+	}
 	const int& getPrev() const;
 	const t& getKey() const;
 	T* getData() const;
@@ -27,7 +31,7 @@ public:
 	void setKey(t newKey);
 	void setData(T* newData);
 	void show();
-	const Element<Qelement<T,t>>* getPositionInList() const;
+	Element<Qelement<T,t>>* getPositionInList() const;
 	void setPositionInList(Element<Qelement<T, t>>* newMyself);
 };
 
@@ -68,7 +72,7 @@ void Qelement<T, t>::show() { //wyœwietlenie tylko klucza
 }
 
 template <typename T, typename t>
-const Element<Qelement<T, t>>* Qelement<T, t>::getPositionInList() const {
+Element<Qelement<T, t>>* Qelement<T, t>::getPositionInList() const {
 	return whereInList;
 }
 

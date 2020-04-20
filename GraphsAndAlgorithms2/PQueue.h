@@ -36,7 +36,8 @@ PQueue<T,t>::PQueue() {
 
 template <typename T, typename t>
 PQueue<T,t>::~PQueue() {
-	delete HeapOnList;
+	 HeapOnList->~List();
+	 delete HeapOnList;
 }
 
 template <typename T, typename t>
@@ -71,7 +72,8 @@ template <typename T, typename t>
 void  PQueue<T,t>::insert(t key, T* data) {
 	int i = HeapOnList->size();
 	Compare<T,t> comp; //komparator
-	HeapOnList->insertOnBack(new Qelement<T,t>(key, data));
+	Qelement<T, t>* q = new Qelement<T, t>(key, data);
+	HeapOnList->insertOnBack(q);
 	while (i != 0 && comp((*HeapOnList)[i],(*HeapOnList)[Parent(i)])) { //comp(elem1, elem2) zwraca prawde 
 		HeapOnList->swap((*HeapOnList)[i], (*HeapOnList)[Parent(i)]); //gdy klucz z elem 1 jest mniejszy od klucza z elem 2
 		i = Parent(i);
@@ -95,9 +97,10 @@ Qelement<T,t>* PQueue<T,t>::removeMin() { //czy tu dobrze?
 		return HeapOnList->removeFromFront();
 	}
 	if (!HeapOnList->isEmpty()) {
-		Qelement<T, t>* tmp = new Qelement<T, t>();
 		HeapOnList->swap((*HeapOnList)[0], (*HeapOnList)[size - 1]);
-		tmp = HeapOnList->removeFromBack();
+		Qelement<T, t>* tmp = HeapOnList->removeFromBack();
+		//tmp->getPositionInList()->setElement(nullptr);
+		//delete tmp->getPositionInList();
 		repair();
 		return tmp;
 	}
