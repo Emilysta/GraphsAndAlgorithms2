@@ -22,11 +22,12 @@ public:
 	void showList();
 	bool isEmpty() const;
 	void swap(T* elem1, T* elem2);//zamiana miejscami
+	void swapP(T* elem1, T* elem2);//zamiana miejscami
 	Element<T>* getHead() const;
 	Element<T>* getTail() const;
 	Element<T>* getElemAtIndex(int index) const; //zwraca "opakowanie" o indeksie
 	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
-	T* findElem(T* elem) const;
+	T* findElem(T elem);
 	T* findAndDelete(T elem);
 	void setNullptr();
 };
@@ -56,7 +57,10 @@ T* List<T>::removeFromFront() {
 		if (size2 == 0) {
 			tail = nullptr;
 		}
-		return toRemove->getElement();
+		T* tmp = toRemove->getElement();
+		toRemove->setElement(nullptr);
+		delete toRemove;
+		return tmp;
 	}
 }
 template <typename T>
@@ -109,7 +113,10 @@ T* List<T>::removeFromBack() {
 		head = nullptr;
 	}
 	--size2;
-	return toRemove->getElement();
+	T* tmp = toRemove->getElement();
+	toRemove->setElement(nullptr);
+	delete toRemove;
+	return tmp;
 }
 
 template <typename T>
@@ -129,6 +136,25 @@ void List<T>::insertOnFront(T* elem) {
 		head->setPrevious(newElem);
 		head = newElem;
 		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index 0
+	}
+	newElem = nullptr;
+	delete newElem;
+}
+
+void List<int>::insertOnFront(int* elem) {
+	++size2;
+	Element<int>* newElem = new Element<int>;
+	newElem->setElement(elem);
+	newElem->setPrevious(nullptr);
+	if (head == nullptr && tail == nullptr) {
+		newElem->setNext(nullptr);
+		head = newElem;
+		tail = newElem;
+	}
+	else {
+		newElem->setNext(head);
+		head->setPrevious(newElem);
+		head = newElem;
 	}
 	newElem = nullptr;
 	delete newElem;
@@ -214,6 +240,21 @@ void List<T>::showList() {
 	std::cout << '\n';
 }
 
+void List<int>::showList() {
+	Element<int>* h = head;
+	if (isEmpty()) {
+		std::cout << "Lista pusta\n";
+	}
+	else {
+		for (int i = 0; i < size2; i++) {
+			std::cout << *h->getElement();
+			std::cout << " ";
+			h = h->getNext();
+		}
+	}
+	std::cout << '\n';
+}
+
 template <typename T>
 bool List<T>::isEmpty() const {
 	if (size2 == 0) {
@@ -224,6 +265,13 @@ bool List<T>::isEmpty() const {
 
 template <typename T>
 void List<T>::swap(T* elem1, T* elem2) {
+	T tmp = *elem1;
+	*elem1 = *elem2;
+	*elem2 = tmp;
+}
+
+template <typename T>
+void List<T>::swapP(T* elem1, T* elem2) {
 	T* tmp = elem1;
 	elem1 = elem2;
 	elem2 = tmp;
@@ -282,12 +330,12 @@ T* List<T>::operator [](int toSearch) const {
 }
 
 template <typename T>
-T* List<T>::findElem(T* elem) const {
+T* List<T>::findElem(T elem){
 	if (!isEmpty()) {
 		Element<T>* tmp = head;
-		Compare<Vertex<int>, int> comp;
+		Compare<Vertex<int,int>, int> comp;
 		do {
-			if (comp(*elem, *(tmp->getElement()))) {
+			if (comp(elem, *(tmp->getElement()))) {
 				return tmp->getElement();
 			}
 			else {
@@ -303,10 +351,10 @@ template <typename T>
 T* List<T>::findAndDelete(T elem) {
 	if (!isEmpty()) {
 		int count = 0;
-		Element<T>* tmp = head;
+		Element<T>* toRemove = head;
 		Compare<Vertex<int, T>, int> comp;
 		do {
-			if (comp(elem, *(tmp->getElement()))) {
+			if (comp(elem, *(toRemove->getElement()))) {
 				if (count == 0) {
 					return removeFromFront();
 				}
@@ -314,17 +362,22 @@ T* List<T>::findAndDelete(T elem) {
 					return removeFromBack();
 				}
 				else {
-					(tmp->getPrevious())->setNext(tmp->getNext());
-					(tmp->getNext())->setPrevious(tmp->getPrevious());
+					(toRemove->getPrevious())->setNext(toRemove->getNext());
+					(toRemove->getNext())->setPrevious(toRemove->getPrevious());
 					--size2;
-					return tmp->getElement();
+					T* tmp = toRemove->getElement();
+					toRemove->setNext(nullptr);
+					toRemove->setPrevious(nullptr);
+					toRemove->setElement(nullptr);
+					delete toRemove;
+					return tmp;
 				}
 			}
 			else {
 				count++;
-				tmp = tmp->getNext();
+				toRemove = toRemove->getNext();
 			}
-		} while (tmp != nullptr);
+		} while (toRemove != nullptr);
 	}
 	return nullptr;
 }

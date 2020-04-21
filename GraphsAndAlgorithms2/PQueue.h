@@ -99,8 +99,6 @@ Qelement<T,t>* PQueue<T,t>::removeMin() { //czy tu dobrze?
 	if (!HeapOnList->isEmpty()) {
 		HeapOnList->swap((*HeapOnList)[0], (*HeapOnList)[size - 1]);
 		Qelement<T, t>* tmp = HeapOnList->removeFromBack();
-		//tmp->getPositionInList()->setElement(nullptr);
-		//delete tmp->getPositionInList();
 		repair();
 		return tmp;
 	}

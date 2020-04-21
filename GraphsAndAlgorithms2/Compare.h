@@ -5,6 +5,15 @@
 template < typename T,typename t>
 class Compare {
 public:
+
+	bool operator() (Qelement<Vertex<int, t>, t> elem1, Qelement<Vertex<int, t>, t> elem2) {
+		if (elem1.getData()->getPoint() == elem2.getData()->getPoint()) {  //jesli te same elementy
+			return true; //zwraca prawdê
+		}
+		else { //jeœli inne 
+			return false; //zwraca false
+		}
+	}
 	bool operator() (Qelement<ExtendedVertex<int,t>, t>* elem1, Qelement<ExtendedVertex<int,t>, t>* elem2) {
 		if (elem1->getKey() < elem2->getKey()) {  //jesli wartosc klucza elem1 jest mniejsza
 			return true; //zwraca prawdê
@@ -21,16 +30,6 @@ public:
 			return false; //zwraca false
 		}
 	}
-
-	bool operator() (Qelement<Vertex<int,t>, t> elem1, Qelement<Vertex<int,t>, t> elem2) {
-		if (elem1.getData()->getPoint()== elem2.getData()->getPoint()) {  //jesli te same elementy
-			return true; //zwraca prawdê
-		}
-		else { //jeœli inne 
-			return false; //zwraca false
-		}
-	}
-
 	bool operator() (Vertex<t,t> elem1, Vertex<t,t> elem2) {
 		if (elem1.getPoint() == elem2.getPoint()) {  //jesli wartosc/nazwa wierzcho³ka elem1 jest równa
 			return true; //zwraca prawdê
