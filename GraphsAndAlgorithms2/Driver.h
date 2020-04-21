@@ -112,12 +112,14 @@ void testDijkstra() {
 		file.close();
 	}
 	Dijkstra(graph, time, toFile);
+	std::cout << "Zakonczono test dla grafu na macierzy. Czas dzialania algorytmu: " << time <<"micro s\n";
 	if (toFile) {
 		file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
 		file << "Graf na liscie - wyniki dzialania algorytmu: \n";
 		file.close();
 	}
 	Dijkstra(graph2, time, toFile);
+	std::cout << "Zakonczono test dla grafu na liscie. Czas dzialania algorytmu: " << time << "micro s\n";
 	delete graph2;
 	delete graph;
 }
