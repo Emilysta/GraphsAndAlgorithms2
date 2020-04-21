@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include <fstream>
 #include "GraphOnList.h"
 #include "GraphOnMatrix.h"
 #include "DijkstraAlgorithm.h"
@@ -33,6 +34,26 @@ void priorityQueueTest() {
 	queue->insert(1, new Vertex<int, int>(2));
 	queue->insert(2, new Vertex<int, int>(3));
 	queue->insert(3, new Vertex<int, int>(4));
+	queue->show();
+	queue->removeMin()->show();
+	std::cout << std::endl;
+	queue->show();
+	queue->show();
+	queue->removeMin()->show();
+	std::cout << std::endl;
+	queue->show();
+	queue->removeMin()->show();
+	std::cout << std::endl;
+	queue->show();
+	queue->removeMin()->show();
+	std::cout << std::endl;
+	queue->show();
+	queue->removeMin()->show();
+	std::cout << std::endl;
+	queue->show();
+	std::cout << "Wpycham 1\n";
+	queue->insert(1, new Vertex<int, int>(4));
+	queue->show();
 	delete queue;
 }
 
@@ -75,8 +96,28 @@ void testDijkstra() {
 	GraphOnList<int>* graph2 = new GraphOnList<int>();
 	graph2->fillGraph(name);
 	double time = 0;
-	Dijkstra(graph, time, true);
-	Dijkstra(graph2, time, true);
+	std::cout << "Czy zapisac koszty drogi i sciezki do pliku? t/n: ";
+	char t;
+	bool toFile = false;
+	do{
+		std::cin >> t;
+	} while (t != 'n' && t != 't');
+	if (t == 't') {
+		toFile = true;
+	}
+	std::ofstream file;
+	if (toFile) {
+		file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
+		file << "Graf na macierzy - wyniki dzialania algorytmu: \n";
+		file.close();
+	}
+	Dijkstra(graph, time, toFile);
+	if (toFile) {
+		file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
+		file << "Graf na liscie - wyniki dzialania algorytmu: \n";
+		file.close();
+	}
+	Dijkstra(graph2, time, toFile);
 	delete graph2;
 	delete graph;
 }

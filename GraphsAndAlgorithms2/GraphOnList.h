@@ -1,7 +1,6 @@
 #pragma once
 #include "Matrix.h"
 #include "TypesOfList.h"
-#include "ExtendedEdge.h"
 #include "Graph.h"
 #include "Vertex.h"
 

@@ -2,6 +2,7 @@
 #include "Graph.h"
 #include "PQueue.h"
 #include <chrono>
+#include <fstream>
 template <typename t>
 void Dijkstra(Graph<t> * graph,double& time,bool toFile) {
 	PQueue <Vertex<int, t>, t>* Q = new PQueue<Vertex<int, t>, t>();
@@ -49,13 +50,15 @@ void Dijkstra(Graph<t> * graph,double& time,bool toFile) {
 	time = duration.count();
 	delete Q;
 	if (toFile) {
+		std::ofstream file;
 		for (int i = 0; i < S->getHeapOnList()->size(); i++) {
 			Qelement<Vertex<int, t>, t>* o = (*S->getHeapOnList())[i];
 			t key = o->getKey();
-			std::cout << "W.koncowy: " << o->getData()->getPoint();
-			std::cout << " Koszt sciezki: ";
-			std::cout << key;
-			std::cout << " Sciezka: ";
+			file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
+			file << "W.koncowy: " << o->getData()->getPoint();
+			file << " Koszt sciezki: ";
+			file << key;
+			file << " Sciezka: ";
 			List<int> path;
 			while (true) {
 				int* path2 = new int(o->getData()->getPoint());
@@ -65,9 +68,16 @@ void Dijkstra(Graph<t> * graph,double& time,bool toFile) {
 				}
 				o = S->getHeapOnList()->findElem(Qelement<Vertex<int, t>, t>(0, new Vertex<int, int>(o->getPrev())));
 			}
+			file.close();
 			path.showList();
-			std::cout << std::endl;
+			file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
+			file << std::endl;
+			file.close();
 		}
+		file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
+		file << "Czas wykonania algorytmu: " << time << "micros" <<std::endl;
+		file.close();
+		
 	}
 	delete S;
 	delete[] arr;

@@ -242,17 +242,19 @@ void List<T>::showList() {
 
 void List<int>::showList() {
 	Element<int>* h = head;
+	std::ofstream file;
+	file.open("Dijkstra.txt", std::ofstream::out | std::ofstream::app);
 	if (isEmpty()) {
-		std::cout << "Lista pusta\n";
+		file << "Lista pusta\n";
 	}
 	else {
 		for (int i = 0; i < size2; i++) {
-			std::cout << *h->getElement();
-			std::cout << " ";
+			file << *h->getElement();
+			file << " ";
 			h = h->getNext();
 		}
 	}
-	std::cout << '\n';
+	file.close();
 }
 
 template <typename T>
