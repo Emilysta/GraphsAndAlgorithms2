@@ -38,6 +38,7 @@ GraphOnMatrix<T>::GraphOnMatrix() {
 	this->listOfVertices = new List<Vertex<int,T>>();
 	aMatrix = nullptr;//new Matrix<Edge<T>*>();
 	this->startVertex = 0;
+	tmp = new List<List<Edge<T>>>();
 }
 
 template < typename T >
@@ -50,6 +51,10 @@ GraphOnMatrix<T>::~GraphOnMatrix() {
 			delete e;
 		}
 	}
+	for (int i = 0; i < this->listOfVertices->size(); i++) {
+		(*tmp)[i]->setNullptr();
+	}
+	delete tmp;
 	delete aMatrix;
 	delete this->listOfEdges;
 	delete this->listOfVertices;
@@ -183,12 +188,13 @@ bool GraphOnMatrix<T>::removeEdge(Edge<T>* e) {//usuwa krawedz z istniejacych
 
 template <typename T>
 List<Edge<T>>* GraphOnMatrix<T>::incidentEdges(Vertex<int,T>* v) {
-	List<Edge<T>>* tmp  = new List<Edge<T>>();
+	List<Edge<T>>* l = new List<Edge<T>>();
 	for (int i = 0; i < this->listOfVertices->size(); i++) {
 		if (aMatrix->getElement(v->getPoint(), i) != nullptr)
-			list->insertOnBack(aMatrix->getElement(v->getPoint(), i));
+			l->insertOnBack(aMatrix->getElement(v->getPoint(), i));
 	}
-	return list;
+	tmp->insertOnBack(l);
+	return l;
 }
 
 template <typename T>

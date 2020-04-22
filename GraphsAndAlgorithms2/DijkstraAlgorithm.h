@@ -32,17 +32,15 @@ void Dijkstra(Graph<t> * graph,double& time,bool toFile) {
 			Vertex<int, t>* z = graph->opposite(d, (*incidentEdges)[i]);
 			t number = elemPQ->getKey() + (*incidentEdges)[i]->getWeight();
 			if (arr[z->getPoint()] != false) {
-				Qelement<Vertex<int, t>, t>* o = Q->getHeapOnList()->findAndDelete(Qelement<Vertex<int, t>, t>(0, z));
-
+				int k = 0;
+				Qelement<Vertex<int, t>, t>* o = Q->getHeapOnList()->findElem(Qelement<Vertex<int, t>, t>(0, z), k);
+				//Q->replaceKey(Qelement<Vertex<int, t>, t>(0, z),number,)
 				if (number < o->getKey()) {
-					o->setKey(number);
-					o->setPrev(d->getPoint());
+					Q->replaceKey(o, number, d->getPoint(),k);
 				}
-				Q->insert(o);
+				//Q->insert(o);
 			}
 		}
-		incidentEdges->setNullptr();
-		delete incidentEdges;
 	}
 
 	auto stop = std::chrono::high_resolution_clock::now();

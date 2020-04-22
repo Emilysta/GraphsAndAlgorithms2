@@ -69,8 +69,6 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 		for (int i = 0; i < numberOfVertices; i++) {
 			List<Edge<T>>* l = new List<Edge<T>>();
 			aList->insertOnBack(l);
-			l = nullptr;
-			delete l;
 		}
 		for (int i = 0; i < numberOfVertices; i++) {
 			ExtendedVertex<int, T>* v = new ExtendedVertex<int, T>(i);
@@ -86,8 +84,6 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 			this->listOfEdges->insertOnBack(edge); // w œrodku funkcji ustawia sie wskaznik na miejsce w liscie
 			(*aList)[row]->insertOnBack(edge);
 			(*aList)[column]->insertOnBack(edge);
-			edge = nullptr;
-			delete edge;
 		}
 	}
 	else {
@@ -173,11 +169,12 @@ bool GraphOnList<T>::removeEdge(Edge<T>* e) {//usuwa krawedz z istniejacych
 //do sprawdzenia
 template <typename T>
 List<Edge<T>>* GraphOnList<T>::incidentEdges(Vertex<int,T>* v) {
-	List<Edge<T>>* tmp = new List<Edge<T>>();
-	for (int i = 0; i < (*aList)[v->getPoint()]->size(); i++) {
-		tmp->insertOnBack( (*(*aList)[v->getPoint()])[i] );
-	}
-	return tmp;
+	//List<Edge<T>>* tmp = new List<Edge<T>>();
+	//for (int i = 0; i < (*aList)[v->getPoint()]->size(); i++) {
+	//	tmp->insertOnBack( (*(*aList)[v->getPoint()])[i] );
+	//}
+	//return tmp;
+	return (*aList)[v->getPoint()];
 }
 //do sprawdzenia
 template <typename T>

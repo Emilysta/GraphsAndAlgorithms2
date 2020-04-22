@@ -1,1 +1,24 @@
-
+Graf na macierzy - wyniki dzialania algorytmu: 
+W.koncowy: 7 Koszt sciezki: 0 Sciezka: 7 
+W.koncowy: 5 Koszt sciezki: 29 Sciezka: 7 5 
+W.koncowy: 2 Koszt sciezki: 44 Sciezka: 7 5 2 
+W.koncowy: 8 Koszt sciezki: 51 Sciezka: 7 5 8 
+W.koncowy: 3 Koszt sciezki: 68 Sciezka: 7 5 3 
+W.koncowy: 0 Koszt sciezki: 72 Sciezka: 7 5 0 
+W.koncowy: 1 Koszt sciezki: 81 Sciezka: 7 5 0 1 
+W.koncowy: 4 Koszt sciezki: 95 Sciezka: 7 5 4 
+W.koncowy: 9 Koszt sciezki: 98 Sciezka: 7 5 9 
+W.koncowy: 6 Koszt sciezki: 128 Sciezka: 7 5 6 
+Czas wykonania algorytmu: 356micros
+Graf na liscie - wyniki dzialania algorytmu: 
+W.koncowy: 7 Koszt sciezki: 0 Sciezka: 7 
+W.koncowy: 5 Koszt sciezki: 29 Sciezka: 7 5 
+W.koncowy: 2 Koszt sciezki: 44 Sciezka: 7 5 2 
+W.koncowy: 8 Koszt sciezki: 51 Sciezka: 7 5 8 
+W.koncowy: 3 Koszt sciezki: 68 Sciezka: 7 5 3 
+W.koncowy: 0 Koszt sciezki: 72 Sciezka: 7 5 0 
+W.koncowy: 1 Koszt sciezki: 81 Sciezka: 7 5 0 1 
+W.koncowy: 4 Koszt sciezki: 95 Sciezka: 7 5 4 
+W.koncowy: 9 Koszt sciezki: 98 Sciezka: 7 5 9 
+W.koncowy: 6 Koszt sciezki: 128 Sciezka: 7 5 6 
+Czas wykonania algorytmu: 197micros
