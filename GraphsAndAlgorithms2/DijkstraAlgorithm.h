@@ -5,8 +5,8 @@
 #include <fstream>
 template <typename t>
 void Dijkstra(Graph<t> * graph,double& time,bool toFile) {
-	PQueue <Vertex<int, t>, t>* Q = new PQueue<Vertex<int, t>, t>();
-	PQueue <Vertex<int, t>, t>* S = new PQueue<Vertex<int, t>, t>();
+	PQueue <Vertex<int, t>, t>* Q = new PQueue<Vertex<int, t>, t>(); //kolejka
+	PQueue <Vertex<int, t>, t>* S = new PQueue<Vertex<int, t>, t>(); //s od "solved", rozwi¹zane
 	Compare <t, t> comp;
 	int numberV = graph->vertices()->size();
 	bool* arr = new bool[numberV];

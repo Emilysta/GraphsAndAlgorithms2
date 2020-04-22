@@ -14,8 +14,8 @@ public:
 	void insert(t key, T* data);
 	void insert(Qelement<T,t>* o);
 	void replaceKey(Qelement<T, t>* z, t newKey, int prev, int index); //ustawia klucz i poprzednika
-	Qelement<T,t>* removeMin(); //zwraca dane:klucz,wierzcho³ek i usuwa
-	Qelement<T,t>* min(); //zwraca dane:klucz,wierzcho³ek
+	Qelement<T,t>* removeMin(); //zwraca dane:klucz,wierzcho³ek koncowy i poprzednik i usuwa "opakowanie" z listy
+	Qelement<T,t>* min(); //zwraca dane:klucz,wierzcho³ek koncowy i poprzednik
 	void repair(int i = 0);
 	int Parent(int i) {
 		return (i - 1) / 2;
@@ -94,7 +94,7 @@ void PQueue<T, t>::replaceKey(Qelement<T, t>* z, t newKey, int prev,int index) {
 	z->setKey(newKey);
 	z->setPrev(prev);
 	int parent;
-	do {
+	do { //naprawa kopca w górê, bo zmienilismy klucz na mniejszy
 		if (index % 2 == 1) {
 			parent = (index - 1) / 2;
 		}

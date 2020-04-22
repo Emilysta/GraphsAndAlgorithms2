@@ -1,7 +1,7 @@
 #pragma once
 template <typename T>
 class Element;
-template <typename t,typename T>
+template <typename t,typename T> // dwa typy poniewaz wersja rozszerzona potrzebuje dwóch
 class Vertex
 {
 protected:

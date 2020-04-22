@@ -7,7 +7,8 @@ template <typename T>
 class GraphOnMatrix : public Graph<T>
 {
 	Matrix<Edge<T>*>* aMatrix;// macierz s¹siedztwa;
-	List<List<Edge<T>>>* tmp;
+	List<List<Edge<T>>>* tmp; //tymczasowa lista list krawedzi incydentnych
+	//aby nie bylo wyciekow pamiêcie
 public:
 	GraphOnMatrix();
 	~GraphOnMatrix();
@@ -24,7 +25,7 @@ public:
 	void showVertices();
 	Vertex<int,T>** endVertices(Edge<T>* e);
 	Vertex<int,T>* opposite(Vertex<int,T>* v, Edge<T>* e);
-	bool areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w);//true jesli s¹ s¹siednie, false jeœli nie s¹
+	bool areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w);//"true" jesli s¹ s¹siednie, "false" jeœli nie s¹
 	void replaceV(Vertex<int,T>* v, int number);
 	void replaceE(Edge<T>* e, T weight);
 	void repairMatrix();
@@ -36,7 +37,7 @@ template < typename T >
 GraphOnMatrix<T>::GraphOnMatrix() {
 	this->listOfEdges = new List<Edge<T>>();
 	this->listOfVertices = new List<Vertex<int,T>>();
-	aMatrix = nullptr;//new Matrix<Edge<T>*>();
+	aMatrix = nullptr;
 	this->startVertex = 0;
 	tmp = new List<List<Edge<T>>>();
 }
@@ -66,8 +67,8 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 	int numberOfVertices;
 	int start;
 
-	int row;  //startpoint of edge
-	int column; //endpoint 
+	int row;  //jeden z koncow krawedzi
+	int column; //drugi z koncow
 	T weight;
 	std::fstream file;
 

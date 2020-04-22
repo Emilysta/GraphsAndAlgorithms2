@@ -8,13 +8,13 @@
 void timesTest() {
 	const int countOfInstances = 100;
 	const int types = 20;
-	std::string names[types] = { "c10d25x","c10d50x","c10d75x" ,"c10d100x" , //c means count
-							"c50d25x","c50d50x","c50d75x" ,"c50d100x" ,	 //d means density 
-							"c100d25x","c100d50x","c100d75x" ,"c100d100x" , //sth after "x" means number of instancy
+	std::string names[types] = { "c10d25x","c10d50x","c10d75x" ,"c10d100x" , //c oznacza ilosc wierzcho³ków od "count"
+							"c50d25x","c50d50x","c50d75x" ,"c50d100x" ,	//d oznacza gestoœæ od "density"  
+							"c100d25x","c100d50x","c100d75x" ,"c100d100x" , //numer po "x" oznacza numer insatncji
 							"c500d25x","c500d50x","c500d75x" ,"c500d100x" ,
 							"c1000d25x","c1000d50x","c1000d75x" ,"c1000d100x" };
-	std::string density[4] = { "0,25","0,50","0,75","1,00" };
-	int countOfVertices[5] = { 10,50,100,500,1000 };
+	std::string density[4] = { "0,25","0,50","0,75","1,00" }; //gêstoœci
+	int countOfVertices[5] = { 10,50,100,500,1000 }; //ilosci wierzcho³ków
 	std::ofstream file;
 	double timeMatrix = 0;
 	double timeList = 0;

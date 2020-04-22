@@ -12,8 +12,8 @@ public:
 	List();
 	~List();
 	T* removeFromFront();
-	Element<T>* remove();
-	T* removeAtIndex(int index);
+	Element<T>* remove(); //usuwanie elementów wraz z "opakowaniami", uzywane przy destruktorze
+	T* removeAtIndex(int index); //usun na podanym indeksie
 	T* removeFromBack();
 	void insertOnFront(T* elem);
 	void insertAfter(int index, T* newElem);
@@ -27,9 +27,9 @@ public:
 	Element<T>* getTail() const;
 	Element<T>* getElemAtIndex(int index) const; //zwraca "opakowanie" o indeksie
 	T* operator [](int toSearch) const; //zwraca element z "opakowania" o danym indeksie
-	T* findElem(T elem);
-	T* findElem(T elem, int& i);
-	T* findAndDelete(T elem);
+	T* findElem(T elem); //wyszukuje w liscie dany element
+	T* findElem(T elem, int& i); //wyszukuje w liscie dany element, zapisuje do i jego polozenie
+	T* findAndDelete(T elem); //wyszukuje i usuwa z listy, zwraca element z "opakowania",usuwa opakowanie 
 	void setNullptr();
 };
 
@@ -133,13 +133,13 @@ void List<T>::insertOnFront(T* elem) {
 		newElem->setNext(nullptr);
 		head = newElem;
 		tail = newElem;
-		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index 0
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje
 	}
 	else {
 		newElem->setNext(head);
 		head->setPrevious(newElem);
 		head = newElem;
-		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index 0
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje
 	}
 	newElem = nullptr;
 	delete newElem;
@@ -183,7 +183,6 @@ void List<T>::insertAfter(int index, T* newElem) {
 			getElemAtIndex(index)->setNext(toAdd);
 			toAdd->getElement()->setPositionInList(toAdd); //usatwiam pozycje elementu w liœcie
 			++size2;
-			//toAdd = nullptr
 		}
 	}
 }
@@ -196,13 +195,13 @@ void List<T>::insertOnBack(T* elem) {
 	if (tail == nullptr && head == nullptr) {
 		head = newElem;
 		tail = newElem;
-		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index ostatni
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje 
 	}
 	else {
 		newElem->setPrevious(tail);
 		tail->setNext(newElem);
 		tail = newElem;
-		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje na index ostatni
+		newElem->getElement()->setPositionInList(newElem); //ustawiam pozycje 
 	}
 }
 

@@ -9,13 +9,13 @@ void GenerateGraphsToFile() {
 	int maxCountOfEdges[5] = { 45,1225,4950,124750,499500 }; // 0.5*n(n-1) where n is number of vertices 
 	float density[4] = { 0.25,0.50,0.75,1.00 };
 	const int types = 20;
-	std::string names[types] = { "c10d25x","c10d50x","c10d75x" ,"c10d100x" , //c means count
-							"c50d25x","c50d50x","c50d75x" ,"c50d100x" ,	 //d means density 
-							"c100d25x","c100d50x","c100d75x" ,"c100d100x" , //sth after "x" means number of instancy
+	std::string names[types] = { "c10d25x","c10d50x","c10d75x" ,"c10d100x" , //c oznacza ilosc wierzcho³ków od "count"
+							"c50d25x","c50d50x","c50d75x" ,"c50d100x" ,	 //d oznacza gestoœæ od "density" 
+							"c100d25x","c100d50x","c100d75x" ,"c100d100x" , //numer po "x" oznacza numer insatncji
 							"c500d25x","c500d50x","c500d75x" ,"c500d100x" ,
 							"c1000d25x","c1000d50x","c1000d75x" ,"c1000d100x" };
 	std::cout << "Generowanie grafow...";
-	for (int i = 0; i < types; i++) { //to types
+	for (int i = 0; i < types; i++) { //do rozmiaru tablicy z typami grafów
 		for (int j = 0; j < countOfInstances; j++) {
 			std::string nameOfFile = "E:\\Code\\Pliki\\";
 			nameOfFile += names[i];
@@ -25,8 +25,8 @@ void GenerateGraphsToFile() {
 			std::ofstream file;
 			file.open(nameOfFile.c_str());
 			if (file.good()) {
-				int edges = (int)(density[i % 4] * maxCountOfEdges[i / 4]); //density of graph
-				int startPoint = rand() % countOfVertices[i / 4];//start point from 0 to count-1
+				int edges = (int)(density[i % 4] * maxCountOfEdges[i / 4]); //gêstoœæ grafu
+				int startPoint = rand() % countOfVertices[i / 4];//wierzcholek startowy pomiedzy 0 a koncowym indeksem
 				file << edges << "\t" << countOfVertices[i / 4] << "\t" << startPoint << "\n";
 				Matrix<int>* toSave = new Matrix<int>(countOfVertices[i / 4]);
 				for (int k = 0; k < edges; k++) {
@@ -34,7 +34,7 @@ void GenerateGraphsToFile() {
 						for (int x = 0; x < countOfVertices[i / 4]; x++) {
 							for (int y = 0; y < countOfVertices[i / 4]; y++) {
 								if (x != y && toSave->getElement(x, y) == 0) {
-									T weight = rand() % 100 + 1; //from 1 to 100
+									T weight = rand() % 100 + 1;  //od 1 do 100
 									file << x << "\t" << y << "\t" << weight << "\n";
 									k++;
 									toSave->setElement(x, y, 1);
@@ -48,7 +48,7 @@ void GenerateGraphsToFile() {
 					if (k == 0) {
 						int randR = rand() % countOfVertices[i / 4];
 						for (int z = 0; z < countOfVertices[i / 4]; z++) {
-							T weight = rand() % 100 + 1; //from 1 to 100
+							T weight = rand() % 100 + 1; //od 1 do 100
 							if (z != randR) {
 								file << randR << "\t" << z << "\t" << weight << "\n";
 								toSave->setElement(randR, z, 1);
@@ -62,7 +62,7 @@ void GenerateGraphsToFile() {
 					do {
 						endOfEdge = rand() % countOfVertices[i / 4];
 					} while (endOfEdge==startOfEdge);
-					T weight = rand() % 100 + 1; //from 1 to 100
+					T weight = rand() % 100 + 1;  //od 1 do 100
 					if (toSave->getElement(startOfEdge, endOfEdge) == 0 && toSave->getElement(endOfEdge,startOfEdge) == 0) {
 						file << startOfEdge << "\t" << endOfEdge << "\t" << weight << "\n";
 						toSave->setElement(startOfEdge, endOfEdge, 1);

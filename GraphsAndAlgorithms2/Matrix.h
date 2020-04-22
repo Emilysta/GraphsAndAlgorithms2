@@ -67,7 +67,7 @@ void Matrix<T>::setNullptr() {
 	}
 }
 
-template <typename T> //to show edges that are saved
+template <typename T> //aby pokazac macierz 
 void Matrix<T>::show() {
 	for (int i = 0; i < numberOfPoints; i++) {
 		for (int j = 0; j < numberOfPoints; j++) {

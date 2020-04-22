@@ -25,7 +25,7 @@ public:
 	void showVertices();
 	ExtendedVertex<int,T>** endVertices(Edge<T>* e);
 	Vertex<int,T>* opposite(Vertex<int,T>* v, Edge<T>* e);
-	bool areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w);//true jesli s¹ s¹siednie, false jeœli nie s¹
+	bool areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w);//"true" jesli s¹ s¹siednie, "false" jeœli nie s¹
 	void replaceV(Vertex<int,T>* v, int number);
 	void replaceE(Edge<T>* e, T weight);
 	Vertex<int,T>* getStartVertex();
@@ -52,13 +52,13 @@ GraphOnList<T>::~GraphOnList() {
 }
 
 template <typename T>
-void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Wazne
+void GraphOnList<T>::fillGraph(std::string nameOfFile) {
 	int numberOfEdges;
 	int numberOfVertices;
 	int start;
 
-	int row;  //startpoint of edge
-	int column; //endpoint 
+	int row;  //jeden koniec krawedzi
+	int column; //drugi koniec krawedzi
 	T weight;
 	std::fstream file;
 
@@ -105,8 +105,6 @@ void GraphOnList<T>::show() {
 	std::cout << this->listOfVertices->size();
 	std::cout << std::endl;
 	std::cout << "Wierzcholek startowy: " << this->startVertex->getPoint() << std::endl;
-	//this->showVertices();
-	//aMatrix->show();
 }
 
 template <typename T>
@@ -145,7 +143,7 @@ void GraphOnList<T>::insertEdge(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>*
 }
 
 template <typename T>
-bool GraphOnList<T>::removeVertex(ExtendedVertex<int,T>* v) { //usuwa powiazania ale zostawia 
+bool GraphOnList<T>::removeVertex(ExtendedVertex<int,T>* v) { //usuwa wierzcholek i powiazania 
 	if (v->getPoint() >= 0 && v->getPoint() < this->listOfVertices->size()) {
 		List<Edge<T>>* tmp = aList->removeAtIndex(v->getPoint());
 		for (int i = 0; i < tmp->size(); i++) {
@@ -207,7 +205,7 @@ ExtendedVertex<int,T>** GraphOnList<T>::endVertices(Edge<T>* e) {
 	array[1] = dynamic_cast <ExtendedVertex<int, int>*>(e->getEndOfEdge());
 	return array;
 }
-//do sprawdzenia
+
 template <typename T>
 Vertex<int,T>* GraphOnList<T>::opposite(Vertex<int,T>* v, Edge<T>* e) {
 
@@ -229,8 +227,6 @@ bool GraphOnList<T>::areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w) {
 	}
 	return false;
 }
-//do sprawdzenia
-
 
 template <typename T>
 void GraphOnList<T>::replaceV(Vertex<int,T>* v, int number) {
