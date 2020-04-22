@@ -7,6 +7,7 @@ template <typename T>
 class GraphOnMatrix : public Graph<T>
 {
 	Matrix<Edge<T>*>* aMatrix;// macierz s¹siedztwa;
+	List<List<Edge<T>>>* tmp;
 public:
 	GraphOnMatrix();
 	~GraphOnMatrix();
@@ -28,6 +29,7 @@ public:
 	void replaceE(Edge<T>* e, T weight);
 	void repairMatrix();
 	Vertex<int,T>* getStartVertex();
+
 };
 
 template < typename T >
@@ -181,7 +183,7 @@ bool GraphOnMatrix<T>::removeEdge(Edge<T>* e) {//usuwa krawedz z istniejacych
 
 template <typename T>
 List<Edge<T>>* GraphOnMatrix<T>::incidentEdges(Vertex<int,T>* v) {
-	List<Edge<T>>* list = new List<Edge<T>>();
+	List<Edge<T>>* tmp  = new List<Edge<T>>();
 	for (int i = 0; i < this->listOfVertices->size(); i++) {
 		if (aMatrix->getElement(v->getPoint(), i) != nullptr)
 			list->insertOnBack(aMatrix->getElement(v->getPoint(), i));
