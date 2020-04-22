@@ -34,19 +34,19 @@ void Dijkstra(Graph<t> * graph,double& time,bool toFile) {
 			if (arr[z->getPoint()] != false) {
 				int k = 0;
 				Qelement<Vertex<int, t>, t>* o = Q->getHeapOnList()->findElem(Qelement<Vertex<int, t>, t>(0, z), k);
-				//Q->replaceKey(Qelement<Vertex<int, t>, t>(0, z),number,)
 				if (number < o->getKey()) {
 					Q->replaceKey(o, number, d->getPoint(),k);
 				}
-				//Q->insert(o);
 			}
 		}
 	}
 
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	time = duration.count();
+	time = (double)(duration.count());
 	delete Q;
+
+	//wypisanie œcie¿ek...
 	if (toFile) {
 		std::ofstream file;
 		for (int i = 0; i < S->getHeapOnList()->size(); i++) {

@@ -16,7 +16,7 @@ public:
 	void show();
 	void insertVertex(int o);
 	void insertEdge(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>* w, T weight);
-	//bool removeVertex(ExtendedVertex<int,T>* v);
+	bool removeVertex(ExtendedVertex<int,T>* v);
 	bool removeEdge(Edge<T>* e);
 	List<Edge<T>>* incidentEdges(Vertex<int,T>* v);
 	List<Edge<T>>* edges();
@@ -25,9 +25,9 @@ public:
 	void showVertices();
 	ExtendedVertex<int,T>** endVertices(Edge<T>* e);
 	Vertex<int,T>* opposite(Vertex<int,T>* v, Edge<T>* e);
-	bool areAdjacent(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>* w);//true jesli s¹ s¹siednie, false jeœli nie s¹
-	//void replaceV(ExtendedVertex<int,T>* v, int number);
-	//void replaceE(Edge<T>* e, T weight);
+	bool areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w);//true jesli s¹ s¹siednie, false jeœli nie s¹
+	void replaceV(Vertex<int,T>* v, int number);
+	void replaceE(Edge<T>* e, T weight);
 	Vertex<int,T>* getStartVertex();
 };
 
@@ -45,7 +45,6 @@ GraphOnList<T>::~GraphOnList() {
 		dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[0])->setIncidentEdges(nullptr);
 	for (int i = 0; i < this->listOfVertices->size(); i++) {
 		(*aList)[i]->setNullptr();
-		//delete (*aList)[i];
 	}
 	delete aList;
 	delete this->listOfEdges;
@@ -79,11 +78,16 @@ void GraphOnList<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo Waz
 		while (file>>row)
 		{
 			file >> column >> weight;
-			Edge<T>* edge = 
-				new Edge<T>(weight, nullptr, dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[row]), dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[column])); //nullptr bo narazie nie znamy miejsca w liscie 
-			this->listOfEdges->insertOnBack(edge); // w œrodku funkcji ustawia sie wskaznik na miejsce w liscie
-			(*aList)[row]->insertOnBack(edge);
-			(*aList)[column]->insertOnBack(edge);
+			if (weight > 0) {
+				Edge<T>* edge =
+					new Edge<T>(weight, nullptr, dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[row]), dynamic_cast<ExtendedVertex<int, T>*>((*this->listOfVertices)[column])); //nullptr bo narazie nie znamy miejsca w liscie 
+				this->listOfEdges->insertOnBack(edge); // w œrodku funkcji ustawia sie wskaznik na miejsce w liscie
+				(*aList)[row]->insertOnBack(edge);
+				(*aList)[column]->insertOnBack(edge);
+			}
+			else {
+				std::cout << "Waga krawedzi byla ujemna. nie wczytano jej. " << std::endl;
+			}
 		}
 	}
 	else {
@@ -120,6 +124,13 @@ void GraphOnList<T>::insertVertex(int o) {
 
 template <typename T>
 void GraphOnList<T>::insertEdge(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>* w, T weight) { //dodawanie tylko jesli takie wierzcholki istnieja
+	if (weight <= 0) {
+		do {
+			std::cout << "Wprowadz nieujemna wage dla krawedzi: ";
+			std::cin >> weight;
+			std::cout << std::endl;
+		} while (weight <= 0);
+	}
 	if ((v->getPoint() >= 0 && v->getPoint() < this->listOfVertices->size()) &&
 		(w->getPoint() >= 0 && w->getPoint() < this->listOfVertices->size())) {
 		Edge<T>* edge = new Edge<T>(weight, nullptr, v, w);
@@ -133,50 +144,41 @@ void GraphOnList<T>::insertEdge(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>*
 	}
 }
 
-//template <typename T>
-//bool GraphOnList<T>::removeVertex(ExtendedVertex<int,T>* v) { //usuwa powiazania ale zostawia 
-//	if (listOfVertices->findElem(v) != nullptr) { //macierz danej wielkosci jaka byla
-//		for (int j = 0; j < listOfVertices->size(); j++) {
-//			if (aMatrix->getElement(j, v->getPoint()) != nullptr) {
-//				removeEdge(aMatrix->getElement(j, v->getPoint()));
-//				
-//			}
-//			if (aMatrix->getElement(v->getPoint(), j) != nullptr) {
-//				removeEdge(aMatrix->getElement(v->getPoint(), j));
-//				
-//			}
-//		}
-//		listOfVertices->removeAtIndex(v->getPoint());
-//		std::cout << "usunieto z listy vierzcholokow wraz z powiazaniami" << std::endl;
-//		return true;
-//	}
-//	std::cerr << "nie usunieto wierzcholka" << std::endl;
-//	return false;
-//}
+template <typename T>
+bool GraphOnList<T>::removeVertex(ExtendedVertex<int,T>* v) { //usuwa powiazania ale zostawia 
+	if (v->getPoint() >= 0 && v->getPoint() < this->listOfVertices->size()) {
+		List<Edge<T>>* tmp = aList->removeAtIndex(v->getPoint());
+		for (int i = 0; i < tmp->size(); i++) {
+			removeEdge((*tmp)[i]);
+		}
+		delete tmp;
+		this->listOfVertices->removeAtIndex(v->getPoint());
+		delete v;
+		return true;
+	}
+	return false;
+}
+
 template <typename T>
 bool GraphOnList<T>::removeEdge(Edge<T>* e) {//usuwa krawedz z istniejacych
-	Compare<T, int> comp;
 	if (e->getStartOfEdge()->getPoint() >= 0 && e->getStartOfEdge()->getPoint() < this->listOfVertices->size()
 		&& e->getEndOfEdge()->getPoint() >= 0 && e->getEndOfEdge()->getPoint() < this->listOfVertices->size()) {
-		(*aList)[e->getEndOfEdge()->getPoint()]->findAndDelete(e) = nullptr;
-		(*aList)[e->getStartOfEdge()->getPoint()]->findAndDelete(e) = nullptr;
-		this->listOfEdges->findAndDelete(e);
+		Edge<T>* tmp = ((*aList)[e->getEndOfEdge()->getPoint()])->findAndDelete(*e);
+		Edge<T>* tmp2 =((*aList)[e->getStartOfEdge()->getPoint()])->findAndDelete(*e);
+		tmp = nullptr;
+		tmp2 = nullptr;
+		this->listOfEdges->findAndDelete(*e);
 		return true;
 	}
 	std::cerr << "nie usunieto krawedzi" << std::endl;
 	return false;
 }
-//do sprawdzenia
+
 template <typename T>
 List<Edge<T>>* GraphOnList<T>::incidentEdges(Vertex<int,T>* v) {
-	//List<Edge<T>>* tmp = new List<Edge<T>>();
-	//for (int i = 0; i < (*aList)[v->getPoint()]->size(); i++) {
-	//	tmp->insertOnBack( (*(*aList)[v->getPoint()])[i] );
-	//}
-	//return tmp;
 	return (*aList)[v->getPoint()];
 }
-//do sprawdzenia
+
 template <typename T>
 void GraphOnList<T>::showEdges() {
 	std::cout << "Start   End   Weight" << std::endl;
@@ -201,8 +203,8 @@ ListV* GraphOnList<T>::vertices() {
 template <typename T>
 ExtendedVertex<int,T>** GraphOnList<T>::endVertices(Edge<T>* e) {
 	ExtendedVertex<int,T>** array = new ExtendedVertex<int,T> * [2];
-	array[0] = e->getStartOfEdge();
-	array[1] = e->getEndOfEdge();
+	array[0] = dynamic_cast <ExtendedVertex<int, int>*>(e->getStartOfEdge());
+	array[1] = dynamic_cast <ExtendedVertex<int, int>*>(e->getEndOfEdge());
 	return array;
 }
 //do sprawdzenia
@@ -216,12 +218,12 @@ Vertex<int,T>* GraphOnList<T>::opposite(Vertex<int,T>* v, Edge<T>* e) {
 		return e->getEndOfEdge();
 	}
 }
-//do sprawdzenia
+
 template <typename T>
-bool GraphOnList<T>::areAdjacent(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>* w) {
+bool GraphOnList<T>::areAdjacent(Vertex<int,T>* v, Vertex<int,T>* w) {
 
 	for (int i = 0; i < (*aList)[v->getPoint()]->size(); i++) {
-		if ( (*(*aList)[v->getPoint()])[i].GetEndOfEdge() == w->getPoint() || (*(*aList)[v->getPoint()])[i].GetStartOfEdge() == w->getPoint()) {
+		if ( ((*(*aList)[v->getPoint()])[i])->getEndOfEdge()->getPoint() == w->getPoint() || ((*(*aList)[v->getPoint()])[i])->getStartOfEdge()->getPoint() == w->getPoint()) {
 			return true;
 		}
 	}
@@ -229,17 +231,24 @@ bool GraphOnList<T>::areAdjacent(ExtendedVertex<int,T>* v, ExtendedVertex<int,T>
 }
 //do sprawdzenia
 
-//
-//template <typename T>
-//void GraphOnList<T>::replaceV(ExtendedVertex<int,T>* v, int number) {
-//	v->setPoint(number);
-//}
-//
-//template <typename T>
-//void GraphOnList<T>::replaceE(Edge<T>* e, T weight) {
-//	e->setWeight(weight);
-//}
-//
+
+template <typename T>
+void GraphOnList<T>::replaceV(Vertex<int,T>* v, int number) {
+	v->setPoint(number);
+}
+
+template <typename T>
+void GraphOnList<T>::replaceE(Edge<T>* e, T weight) {
+	if (weight <= 0) {
+		do {
+			std::cout << "Wprowadz nieujemna wage dla krawedzi: ";
+			std::cin >> weight;
+			std::cout << std::endl;
+		} while (weight <= 0);
+	}
+	e->setWeight(weight);
+}
+
 template <typename T>
 Vertex<int,T>* GraphOnList<T>::getStartVertex() {
 	return this->startVertex;

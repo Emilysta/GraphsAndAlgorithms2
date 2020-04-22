@@ -31,6 +31,7 @@ void timesTest() {
 				GraphOnList<int> arrayList;
 				arrayMatrix.fillGraph(nameOfFile);
 				arrayList.fillGraph(nameOfFile);
+				std::cout << "..1\n";
 				double time = 0;
 				Dijkstra(&arrayMatrix, time, false);
 				timeMatrix += time;

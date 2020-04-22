@@ -3,7 +3,7 @@
 #include <time.h>
 template <typename T>
 void GenerateGraphsToFile() {
-	std::srand(time(NULL));
+	std::srand((unsigned int)(time(NULL)));
 	const int countOfInstances = 100;
 	int countOfVertices[5] = { 10,50,100,500,1000 };
 	int maxCountOfEdges[5] = { 45,1225,4950,124750,499500 }; // 0.5*n(n-1) where n is number of vertices 

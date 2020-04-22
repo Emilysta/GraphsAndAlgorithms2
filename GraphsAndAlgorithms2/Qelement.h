@@ -1,10 +1,10 @@
 #pragma once
 template <typename T,typename t>
 class Qelement { //element kolejki priorytetowej
-	int previous;
+	int previous; //wierzcho³ek koñców
 	t key; //waga drogi w algorytmie 
-	T* data;	//Wierzcholek poprzedni
-	Element<Qelement<T,t>>* whereInList;
+	T* data;	//Wierzcholek koñcowy
+	Element<Qelement<T,t>>* whereInList; //pozycja w liœcie
 public:
 	Qelement() {
 		previous = -1;
@@ -21,7 +21,6 @@ public:
 
 	~Qelement() {
 		whereInList = nullptr;
-		//delete whereInList;
 		data = nullptr;
 	}
 	const int& getPrev() const;

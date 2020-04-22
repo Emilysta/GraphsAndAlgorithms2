@@ -63,6 +63,7 @@ T* List<T>::removeFromFront() {
 		delete toRemove;
 		return tmp;
 	}
+	return nullptr;
 }
 template <typename T>
 Element<T>* List<T>::remove() {
@@ -76,6 +77,7 @@ Element<T>* List<T>::remove() {
 		}
 		return toRemove;
 	}
+	return nullptr;
 }
 
 template <typename T>
@@ -99,6 +101,7 @@ T* List<T>::removeAtIndex(int index) {
 			return toRemove->getElement();
 		}
 	}
+	return nullptr;
 }
 
 template <typename T>
@@ -408,14 +411,16 @@ T* List<T>::findAndDelete(T elem) {
 
 template <typename T>
 void List<T>::setNullptr() {
-	Element<T>* h = head;
-	if (isEmpty()) {
-		std::cout << "Lista pusta\n";
-	}
-	else {
-		for (int i = 0; i < size2; i++) {
-			(h->setElement(nullptr));
-			h = h->getNext();
+	if (head != nullptr) {
+		Element<T>* h = head;
+		if (isEmpty()) {
+			std::cout << "Lista pusta\n";
+		}
+		else {
+			for (int i = 0; i < size2; i++) {
+				(h->setElement(nullptr));
+				h = h->getNext();
+			}
 		}
 	}
 }

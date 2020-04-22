@@ -51,7 +51,7 @@ GraphOnMatrix<T>::~GraphOnMatrix() {
 			delete e;
 		}
 	}
-	for (int i = 0; i < this->listOfVertices->size(); i++) {
+	for (int i = 0; i < this->tmp->size(); i++) {
 		(*tmp)[i]->setNullptr();
 	}
 	delete tmp;
@@ -82,12 +82,15 @@ void GraphOnMatrix<T>::fillGraph(std::string nameOfFile) { //do poprawy Bardzo W
 		while (file>>row)
 		{
 			file >> column >> weight;
-			Edge<T>* edge = new Edge<T>(weight,nullptr,(*this->listOfVertices)[row],(*this->listOfVertices)[column]); //nullptr bo narzei nie znam miejsca w liscie 
-			this->listOfEdges->insertOnBack(edge); // w œrodku funkjci ustawia sie wskaznik na miejsce w liscie
-			aMatrix->setElement(row, column, edge);
-			aMatrix->setElement(column, row, edge);
-			edge = nullptr;
-			delete edge;
+			if (weight > 0) {
+				Edge<T>* edge = new Edge<T>(weight, nullptr, (*this->listOfVertices)[row], (*this->listOfVertices)[column]); //nullptr bo narzei nie znam miejsca w liscie 
+				this->listOfEdges->insertOnBack(edge); // w œrodku funkjci ustawia sie wskaznik na miejsce w liscie
+				aMatrix->setElement(row, column, edge);
+				aMatrix->setElement(column, row, edge);
+			}
+			else {
+				std::cout<< "Waga krawedzi byla ujemna. nie wczytano jej. " << std::endl;
+			}
 		}
 	}
 	else {
@@ -105,8 +108,8 @@ void GraphOnMatrix<T>::show() {
 	std::cout << this->listOfVertices->size();
 	std::cout << std::endl;
 	std::cout << "Wierzcholek startowy: " << this->startVertex->getPoint() << std::endl;
-	//this->showVertices();
-	//aMatrix->show();
+	this->showVertices();
+	aMatrix->show();
 }
 
 template <typename T>
@@ -135,6 +138,13 @@ void GraphOnMatrix<T>::repairMatrix() {
 
 template <typename T>
 void GraphOnMatrix<T>::insertEdge(Vertex<int,T>* v, Vertex<int,T>* w, T weight) { //dodawanie tylko jesli takie wierzcholki istnieja
+	if (weight <= 0) {
+		do {
+			std::cout << "Wprowadz nieujemna wage dla krawedzi: ";
+			std::cin >> weight;
+			std::cout << std::endl;
+		} while (weight <= 0);
+	}
 	if ((v->getPoint() >= 0 && v->getPoint() < this->listOfVertices->size()) && (w->getPoint() >= 0 && w->getPoint() < this->listOfVertices->size())) {
 		Edge<T>* edge = new Edge<T>(weight, nullptr, v, w);
 		this->listOfEdges->insertOnBack(edge);
@@ -149,7 +159,7 @@ void GraphOnMatrix<T>::insertEdge(Vertex<int,T>* v, Vertex<int,T>* w, T weight) 
 
 template <typename T>
 bool GraphOnMatrix<T>::removeVertex(Vertex<int,T>* v) { //usuwa powiazania ale zostawia macierz danej wielkosci jaka byla
-	if (this->listOfVertices->findElem(v)!=nullptr){
+	if (this->listOfVertices->findElem(*v)!=nullptr){
 		for (int j = 0; j < this->listOfVertices->size(); j++) {
 			if (aMatrix->getElement(j, v->getPoint()) != nullptr) {
 				removeEdge(aMatrix->getElement(j, v->getPoint()));
@@ -253,6 +263,13 @@ void GraphOnMatrix<T>::replaceV(Vertex<int,T>* v, int number) {
 
 template <typename T>
 void GraphOnMatrix<T>::replaceE(Edge<T>* e, T weight) {
+	if (weight <= 0) {
+		do {
+			std::cout << "Wprowadz nieujemna wage dla krawedzi: ";
+			std::cin >> weight;
+			std::cout << std::endl;
+		} while (weight <= 0);
+	}
 	e->setWeight(weight);
 }
 

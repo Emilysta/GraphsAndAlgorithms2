@@ -13,7 +13,7 @@ public:
 	void showWithVertex();
 	void insert(t key, T* data);
 	void insert(Qelement<T,t>* o);
-	void replaceKey(Qelement<T, t>* z, t newKey, int prev, int index);
+	void replaceKey(Qelement<T, t>* z, t newKey, int prev, int index); //ustawia klucz i poprzednika
 	Qelement<T,t>* removeMin(); //zwraca dane:klucz,wierzcho³ek i usuwa
 	Qelement<T,t>* min(); //zwraca dane:klucz,wierzcho³ek
 	void repair(int i = 0);
@@ -103,11 +103,11 @@ void PQueue<T, t>::replaceKey(Qelement<T, t>* z, t newKey, int prev,int index) {
 		}
 		repair(parent);
 		index = parent;
-	} while (parent != 0);
+	} while (parent >= 0);
 }
 
 template <typename T, typename t>
-Qelement<T,t>* PQueue<T,t>::removeMin() { //czy tu dobrze?
+Qelement<T,t>* PQueue<T,t>::removeMin() { 
 	int size = HeapOnList->size();
 	if (size == 1) {
 		return HeapOnList->removeFromFront();
